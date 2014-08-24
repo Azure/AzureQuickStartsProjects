@@ -1,0 +1,8 @@
+\\psf\Home\src\Azure%20Quickstarts\VSIX\NetworkCreateVNet\bin\Debug\NetworkCreateVNet.dll
+\\psf\Home\src\Azure%20Quickstarts\VSIX\NetworkCreateVNet\bin\Debug\NetworkCreateVNet.pdb
+\\psf\Home\src\Azure%20Quickstarts\VSIX\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.dll
+\\psf\Home\src\Azure%20Quickstarts\VSIX\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.pdb
+C:\source\Azure Quickstarts\VSIX\NetworkCreateVNet\bin\Debug\NetworkCreateVNet.dll
+C:\source\Azure Quickstarts\VSIX\NetworkCreateVNet\bin\Debug\NetworkCreateVNet.pdb
+C:\source\Azure Quickstarts\VSIX\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.dll
+C:\source\Azure Quickstarts\VSIX\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.pdb

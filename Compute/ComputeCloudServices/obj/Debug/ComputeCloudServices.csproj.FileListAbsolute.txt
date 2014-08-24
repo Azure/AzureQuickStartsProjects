@@ -1,0 +1,8 @@
+\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeCloudServices\bin\Debug\ComputeCloudServices.dll
+\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeCloudServices\bin\Debug\ComputeCloudServices.pdb
+\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeCloudServices\obj\Debug\ComputeCloudServices.dll
+\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeCloudServices\obj\Debug\ComputeCloudServices.pdb
+C:\source\Azure Quickstarts\VSIX\ComputeCloudServices\bin\Debug\ComputeCloudServices.dll
+C:\source\Azure Quickstarts\VSIX\ComputeCloudServices\bin\Debug\ComputeCloudServices.pdb
+C:\source\Azure Quickstarts\VSIX\ComputeCloudServices\obj\Debug\ComputeCloudServices.dll
+C:\source\Azure Quickstarts\VSIX\ComputeCloudServices\obj\Debug\ComputeCloudServices.pdb

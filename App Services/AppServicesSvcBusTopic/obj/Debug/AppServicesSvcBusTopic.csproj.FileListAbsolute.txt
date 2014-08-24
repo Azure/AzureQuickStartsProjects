@@ -1,0 +1,9 @@
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\bin\Debug\Sender.exe.config
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\bin\Debug\Sender.exe
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\bin\Debug\Sender.pdb
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\bin\Debug\Microsoft.ServiceBus.dll
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\bin\Debug\Microsoft.WindowsAzure.Configuration.dll
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\bin\Debug\Microsoft.ServiceBus.xml
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\bin\Debug\Microsoft.WindowsAzure.Configuration.xml
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\obj\Debug\Sender.exe
+C:\source\Azure Quickstarts\VSIX\AppServicesSvcBusTopic\obj\Debug\Sender.pdb

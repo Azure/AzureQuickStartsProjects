@@ -1,0 +1,8 @@
+\\psf\Home\src\Azure%20Quickstarts\VSIX\NetworkTrafficManager\bin\Debug\NetworkTrafficManager.dll
+\\psf\Home\src\Azure%20Quickstarts\VSIX\NetworkTrafficManager\bin\Debug\NetworkTrafficManager.pdb
+\\psf\Home\src\Azure%20Quickstarts\VSIX\NetworkTrafficManager\obj\Debug\NetworkTrafficManager.dll
+\\psf\Home\src\Azure%20Quickstarts\VSIX\NetworkTrafficManager\obj\Debug\NetworkTrafficManager.pdb
+C:\source\Azure Quickstarts\VSIX\NetworkTrafficManager\bin\Debug\NetworkTrafficManager.dll
+C:\source\Azure Quickstarts\VSIX\NetworkTrafficManager\bin\Debug\NetworkTrafficManager.pdb
+C:\source\Azure Quickstarts\VSIX\NetworkTrafficManager\obj\Debug\NetworkTrafficManager.dll
+C:\source\Azure Quickstarts\VSIX\NetworkTrafficManager\obj\Debug\NetworkTrafficManager.pdb
