@@ -1,0 +1,32 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>API Management Tutorial</Name>
+    <Description>This tutorial demonstrates how to provision an API Management Service</Description>
+    <DefaultName>AppServicesAPIManagement</DefaultName>
+    
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType></ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>    
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>sw-file-icon.png</Icon>
+    
+    <!-- Indicates how many parent folders this item template should appear in -->
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="AppServicesAPIManagement.csproj" File="AppServicesAPIManagement.csproj" ReplaceParameters="true">      
+    </Project>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>ProjectWizard, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=f30ae472f039a534</Assembly>
+    <FullClassName>ProjectWizard.Wizard</FullClassName>
+  </WizardExtension>
+  <WizardData>
+    <navigation>
+      <navigate path="http://go.microsoft.com/fwlink/p/?linkid=393224" generateProject="false" />
+    </navigation>
+  </WizardData>
+</VSTemplate>
