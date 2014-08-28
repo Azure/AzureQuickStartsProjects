@@ -1,8 +1,0 @@
-\\psf\Home\src\Azure%20Quickstarts\VSIX\DataRecoveryServices\bin\Debug\DataRecoveryServices.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\DataRecoveryServices\bin\Debug\DataRecoveryServices.pdb
-\\psf\Home\src\Azure%20Quickstarts\VSIX\DataRecoveryServices\obj\Debug\DataRecoveryServices.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\DataRecoveryServices\obj\Debug\DataRecoveryServices.pdb
-C:\source\Azure Quickstarts\VSIX\DataRecoveryServices\bin\Debug\DataRecoveryServices.dll
-C:\source\Azure Quickstarts\VSIX\DataRecoveryServices\bin\Debug\DataRecoveryServices.pdb
-C:\source\Azure Quickstarts\VSIX\DataRecoveryServices\obj\Debug\DataRecoveryServices.dll
-C:\source\Azure Quickstarts\VSIX\DataRecoveryServices\obj\Debug\DataRecoveryServices.pdb

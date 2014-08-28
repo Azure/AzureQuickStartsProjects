@@ -1,8 +1,0 @@
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeVirtualMachines\bin\Debug\ComputeVirtualMachines.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeVirtualMachines\bin\Debug\ComputeVirtualMachines.pdb
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeVirtualMachines\obj\Debug\ComputeVirtualMachines.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeVirtualMachines\obj\Debug\ComputeVirtualMachines.pdb
-C:\source\Azure Quickstarts\VSIX\ComputeVirtualMachines\bin\Debug\ComputeVirtualMachines.dll
-C:\source\Azure Quickstarts\VSIX\ComputeVirtualMachines\bin\Debug\ComputeVirtualMachines.pdb
-C:\source\Azure Quickstarts\VSIX\ComputeVirtualMachines\obj\Debug\ComputeVirtualMachines.dll
-C:\source\Azure Quickstarts\VSIX\ComputeVirtualMachines\obj\Debug\ComputeVirtualMachines.pdb

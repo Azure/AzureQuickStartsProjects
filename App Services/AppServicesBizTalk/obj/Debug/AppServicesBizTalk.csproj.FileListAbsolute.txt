@@ -1,9 +1,0 @@
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesBizTalk\bin\Debug\AppServicesBizTalk.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesBizTalk\bin\Debug\AppServicesBizTalk.pdb
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesBizTalk\obj\Debug\AppServicesBizTalk.csprojResolveAssemblyReference.cache
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesBizTalk\obj\Debug\AppServicesBizTalk.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesBizTalk\obj\Debug\AppServicesBizTalk.pdb
-C:\source\Azure Quickstarts\VSIX\AppServicesBizTalk\bin\Debug\AppServicesBizTalk.dll
-C:\source\Azure Quickstarts\VSIX\AppServicesBizTalk\bin\Debug\AppServicesBizTalk.pdb
-C:\source\Azure Quickstarts\VSIX\AppServicesBizTalk\obj\Debug\AppServicesBizTalk.dll
-C:\source\Azure Quickstarts\VSIX\AppServicesBizTalk\obj\Debug\AppServicesBizTalk.pdb

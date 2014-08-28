@@ -1,8 +1,0 @@
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeMobileServices\bin\Debug\ComputeMobileServices.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeMobileServices\bin\Debug\ComputeMobileServices.pdb
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeMobileServices\obj\Debug\ComputeMobileServices.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeMobileServices\obj\Debug\ComputeMobileServices.pdb
-C:\source\Azure Quickstarts\VSIX\ComputeMobileServices\bin\Debug\ComputeMobileServices.dll
-C:\source\Azure Quickstarts\VSIX\ComputeMobileServices\bin\Debug\ComputeMobileServices.pdb
-C:\source\Azure Quickstarts\VSIX\ComputeMobileServices\obj\Debug\ComputeMobileServices.dll
-C:\source\Azure Quickstarts\VSIX\ComputeMobileServices\obj\Debug\ComputeMobileServices.pdb

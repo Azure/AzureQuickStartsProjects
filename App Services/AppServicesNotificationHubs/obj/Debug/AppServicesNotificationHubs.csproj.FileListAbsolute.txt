@@ -1,8 +1,0 @@
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesNotificationHubs\bin\Debug\AppServicesNotificationHubs.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesNotificationHubs\bin\Debug\AppServicesNotificationHubs.pdb
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesNotificationHubs\obj\Debug\AppServicesNotificationHubs.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\AppServicesNotificationHubs\obj\Debug\AppServicesNotificationHubs.pdb
-C:\source\Azure Quickstarts\VSIX\AppServicesNotificationHubs\bin\Debug\AppServicesNotificationHubs.dll
-C:\source\Azure Quickstarts\VSIX\AppServicesNotificationHubs\bin\Debug\AppServicesNotificationHubs.pdb
-C:\source\Azure Quickstarts\VSIX\AppServicesNotificationHubs\obj\Debug\AppServicesNotificationHubs.dll
-C:\source\Azure Quickstarts\VSIX\AppServicesNotificationHubs\obj\Debug\AppServicesNotificationHubs.pdb

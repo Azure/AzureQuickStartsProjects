@@ -1,8 +1,0 @@
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeWebSites\bin\Debug\ComputeWebSites.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeWebSites\bin\Debug\ComputeWebSites.pdb
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeWebSites\obj\Debug\ComputeWebSites.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\ComputeWebSites\obj\Debug\ComputeWebSites.pdb
-C:\source\Azure Quickstarts\VSIX\ComputeWebSites\bin\Debug\ComputeWebSites.dll
-C:\source\Azure Quickstarts\VSIX\ComputeWebSites\bin\Debug\ComputeWebSites.pdb
-C:\source\Azure Quickstarts\VSIX\ComputeWebSites\obj\Debug\ComputeWebSites.dll
-C:\source\Azure Quickstarts\VSIX\ComputeWebSites\obj\Debug\ComputeWebSites.pdb

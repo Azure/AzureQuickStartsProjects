@@ -1,8 +1,0 @@
-\\psf\Home\src\Azure%20Quickstarts\VSIX\DataHDInsight\bin\Debug\DataHDInsight.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\DataHDInsight\bin\Debug\DataHDInsight.pdb
-\\psf\Home\src\Azure%20Quickstarts\VSIX\DataHDInsight\obj\Debug\DataHDInsight.dll
-\\psf\Home\src\Azure%20Quickstarts\VSIX\DataHDInsight\obj\Debug\DataHDInsight.pdb
-C:\source\Azure Quickstarts\VSIX\DataHDInsight\bin\Debug\DataHDInsight.dll
-C:\source\Azure Quickstarts\VSIX\DataHDInsight\bin\Debug\DataHDInsight.pdb
-C:\source\Azure Quickstarts\VSIX\DataHDInsight\obj\Debug\DataHDInsight.dll
-C:\source\Azure Quickstarts\VSIX\DataHDInsight\obj\Debug\DataHDInsight.pdb
