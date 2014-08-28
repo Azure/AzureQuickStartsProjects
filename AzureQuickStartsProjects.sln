@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTrafficManager", "Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppServicesScheduler", "App Services\AppServicesScheduler\AppServicesScheduler.csproj", "{9638914E-AC15-4F78-9F73-34E5DA5132AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppServicesAutomation", "App Services\AppServicesAutomation\AppServicesAutomation.csproj", "{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,10 @@ Global
 		{9638914E-AC15-4F78-9F73-34E5DA5132AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9638914E-AC15-4F78-9F73-34E5DA5132AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9638914E-AC15-4F78-9F73-34E5DA5132AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,5 +219,6 @@ Global
 		{3EAFCABE-D8C4-44FC-92FD-FC9925DDA473} = {192147A6-84F3-4BF2-B4B7-A6D5B603DE9E}
 		{5AFAF6A0-17A4-4FFA-9176-547EC2DE26E5} = {192147A6-84F3-4BF2-B4B7-A6D5B603DE9E}
 		{9638914E-AC15-4F78-9F73-34E5DA5132AD} = {96551457-3B31-4419-977E-9C07EA1DDBCB}
+		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A} = {96551457-3B31-4419-977E-9C07EA1DDBCB}
 	EndGlobalSection
 EndGlobal
