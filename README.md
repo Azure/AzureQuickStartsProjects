@@ -108,7 +108,7 @@ If there isn't a public API surface which is [easy to explore via a QuickStart](
 
 This is valuable because the service will still be discover-able by Developers from within Visual Studio.
 
-Follow the steps from above with one additional step:
+Follow the steps from above with these additional steps:
 
 1. Add a `WizardData` element as a child of the `<VSTemplate>`	element.
 
@@ -119,3 +119,7 @@ Follow the steps from above with one additional step:
 	  &lt;/navigation&gt;
 	&lt;/WizardData&gt;
 	</pre>
+
+2. Delete the `AssemblyInfo.cs` file from the `Properties` folder.
+3. Delete the `Program.cs` file from the project.
+4. Delete the `app.config` file from the project.
