@@ -6,3 +6,7 @@ C:\source\Azure Quickstarts\VSIX\NetworkCreateVNetSiteToSite\bin\Debug\NetworkCr
 C:\source\Azure Quickstarts\VSIX\NetworkCreateVNetSiteToSite\bin\Debug\NetworkCreateVNetSiteToSite.pdb
 C:\source\Azure Quickstarts\VSIX\NetworkCreateVNetSiteToSite\obj\Debug\NetworkCreateVNetSiteToSite.dll
 C:\source\Azure Quickstarts\VSIX\NetworkCreateVNetSiteToSite\obj\Debug\NetworkCreateVNetSiteToSite.pdb
+S:\AzureQuickStartProjects\Network\NetworkCreateVNetSiteToSite\bin\Debug\NetworkCreateVNetSiteToSite.dll
+S:\AzureQuickStartProjects\Network\NetworkCreateVNetSiteToSite\bin\Debug\NetworkCreateVNetSiteToSite.pdb
+S:\AzureQuickStartProjects\Network\NetworkCreateVNetSiteToSite\obj\Debug\NetworkCreateVNetSiteToSite.dll
+S:\AzureQuickStartProjects\Network\NetworkCreateVNetSiteToSite\obj\Debug\NetworkCreateVNetSiteToSite.pdb

@@ -6,3 +6,8 @@ C:\source\Azure Quickstarts\VSIX\NetworkCreateVNet\bin\Debug\NetworkCreateVNet.d
 C:\source\Azure Quickstarts\VSIX\NetworkCreateVNet\bin\Debug\NetworkCreateVNet.pdb
 C:\source\Azure Quickstarts\VSIX\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.dll
 C:\source\Azure Quickstarts\VSIX\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.pdb
+S:\AzureQuickStartProjects\Network\NetworkCreateVNet\bin\Debug\NetworkCreateVNet.dll
+S:\AzureQuickStartProjects\Network\NetworkCreateVNet\bin\Debug\NetworkCreateVNet.pdb
+S:\AzureQuickStartProjects\Network\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.csprojResolveAssemblyReference.cache
+S:\AzureQuickStartProjects\Network\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.dll
+S:\AzureQuickStartProjects\Network\NetworkCreateVNet\obj\Debug\NetworkCreateVNet.pdb
