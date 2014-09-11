@@ -20,6 +20,7 @@ namespace DeployManageAzureStorage
     {
         internal string Region { get; set; }
         internal string StorageAccountName { get; set; }
+        internal string StorageAccountType { get; set; }
         internal string PublishSettingsFilePath { get; set; }
     }
 

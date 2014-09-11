@@ -24,6 +24,7 @@ using Microsoft.WindowsAzure.Management;
 using Microsoft.WindowsAzure.Management.Network;
 using Microsoft.WindowsAzure.Management.Network.Models;
 using Microsoft.WindowsAzure.Management.Models;
+using AzureQuickStarts.Common;
 
 namespace DeployManageVirtualNetwork
 {

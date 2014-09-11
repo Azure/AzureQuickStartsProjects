@@ -105,11 +105,10 @@ namespace DeployManageSQLDB
                                 });
         }
 
-        internal async Task<DatabaseUpdateResponse> UpdateDatabaseAsync(string serverName, string databaseName, string newName, string collation, string edition, int? maxSizeInGB)
+        internal async Task<DatabaseUpdateResponse> UpdateDatabaseAsync(string serverName, string databaseName, string newName, string edition, int? maxSizeInGB)
         {
             var p = new DatabaseUpdateParameters();
             if (!string.IsNullOrEmpty(newName)) { p.Name = newName; }
-            if (!string.IsNullOrEmpty(collation)) { p.CollationName = collation; }
             if (!string.IsNullOrEmpty(edition)) { p.Edition = newName; }
             if (maxSizeInGB != null) { p.MaximumDatabaseSizeInGB = maxSizeInGB; }
 

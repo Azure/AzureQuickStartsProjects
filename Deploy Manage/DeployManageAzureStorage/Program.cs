@@ -48,9 +48,10 @@ namespace DeployManageAzureStorage
 
             var serviceParameters = new ManagementControllerParameters
             {
-                PublishSettingsFilePath = @"C:\somepath\somefile.publishsettings",
+                PublishSettingsFilePath = @"C:\Your.publishsettings",
                 Region = LocationNames.WestUS,
-                StorageAccountName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                StorageAccountName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()),
+                StorageAccountType = StorageAccountTypes.StandardGRS
             };
 
             int step = 1;
@@ -136,7 +137,7 @@ namespace DeployManageAzureStorage
                 Console.WriteLine("\n{1}. Update Storage Account named {0}.\n   Updates Description, Label, and GeoReplication status.", managementControllerParameters.StorageAccountName, step);
                 ConsoleContinuePrompt("Update");
 
-                controller.UpdateStorageAccount("My New Storage Account", "Account Label", true);
+                controller.UpdateStorageAccount("My New Storage Account", "Account Label", StorageAccountTypes.StandardGRS);
 
                 Console.WriteLine("...Complete");
             }
@@ -185,7 +186,6 @@ namespace DeployManageAzureStorage
                 Console.WriteLine("   Location...............: {0}", gr.StorageAccount.Properties.Location);
                 Console.WriteLine("   Geo-Primary Region.....: {0}", gr.StorageAccount.Properties.GeoPrimaryRegion);
                 Console.WriteLine("   Geo-Secondary Region...: {0}", gr.StorageAccount.Properties.GeoSecondaryRegion);
-                Console.WriteLine("   Geo-Replication Enabled: {0}", gr.StorageAccount.Properties.GeoReplicationEnabled);
                 Console.WriteLine("   Last geo-failover time.: {0}\n", gr.StorageAccount.Properties.LastGeoFailoverTime.ToString());
 
                 Console.WriteLine("...Complete");

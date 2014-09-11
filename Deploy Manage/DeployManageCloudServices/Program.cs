@@ -43,7 +43,7 @@ namespace DeployManageCloudServices
 
             var serviceParameters = new ManagementControllerParameters
                 {
-                    PublishSettingsFilePath = @"C:Your.publishsettings",
+                    PublishSettingsFilePath = @"C:\Your.publishsettings",
                     ServicePackageFilePath = @"C:\YourPackageFile.cspkg",
                     ServiceConfigurationFilePath = @"YourServiceConfiguration.Cloud.cscfg",
                     CloudServiceName = string.Format("MgmtLibDemo{0}", DateTime.Now.Ticks),

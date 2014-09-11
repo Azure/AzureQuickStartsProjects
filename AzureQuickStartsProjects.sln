@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppServicesScheduler", "App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppServicesAutomation", "App Services\AppServicesAutomation\AppServicesAutomation.csproj", "{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureQuickStarts.Common", "Shared\Common\AzureQuickStarts.Common.csproj", "{723464A7-D261-4063-8296-3A5291388CFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,6 +189,10 @@ Global
 		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{723464A7-D261-4063-8296-3A5291388CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{723464A7-D261-4063-8296-3A5291388CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{723464A7-D261-4063-8296-3A5291388CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{723464A7-D261-4063-8296-3A5291388CFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,5 +226,9 @@ Global
 		{5AFAF6A0-17A4-4FFA-9176-547EC2DE26E5} = {192147A6-84F3-4BF2-B4B7-A6D5B603DE9E}
 		{9638914E-AC15-4F78-9F73-34E5DA5132AD} = {96551457-3B31-4419-977E-9C07EA1DDBCB}
 		{E2C4D4D8-D7BC-43F2-BFF5-3CB19686762A} = {96551457-3B31-4419-977E-9C07EA1DDBCB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\TransientFaultHandling.Core.5.1.1209.1\lib\NET4
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.WindowsAzure.Storage.6.0.1304.1\lib\NET45
 	EndGlobalSection
 EndGlobal

@@ -15,6 +15,7 @@
 //----------------------------------------------------------------------------------
 
 
+using AzureQuickStarts.Common;
 using Microsoft.WindowsAzure;
 using System;
 using System.IO;

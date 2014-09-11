@@ -26,6 +26,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Management.WebSites;
 using Microsoft.WindowsAzure.Management.WebSites.Models;
 using System.Security.Cryptography.X509Certificates;
+using AzureQuickStarts.Common;
 
 
 namespace DeployManageWebSites
@@ -35,10 +36,8 @@ namespace DeployManageWebSites
         private WebSiteManagementClient _webSiteManagementClient;
         private ManagementControllerParameters _parameters;
         private WebSiteCreateParameters.WebSpaceDetails _webSpaceDetails;
-        
-        private const string ServerFarmName = "DefaultServerFarm";
 
-
+        private const string WebHostingPlanName = "Default0";
 
         public ManagementController(ManagementControllerParameters parameters)
         {
@@ -116,44 +115,41 @@ namespace DeployManageWebSites
             return CertificateAuthenticationHelper.GetCredentials(publishSettingCreds.SubscriptionId, publishSettingCreds.ManagementCertificate);
         }
 
-        private async Task UpdateServerFarm()
+        private async Task UpdateWebHostingPlan()
         {
-            var serverFarmList = await _webSiteManagementClient.ServerFarms.ListAsync(_webSpaceDetails.Name);
-            if (serverFarmList.ServerFarms.Count > 0)
+            var webHostingPlanList = await _webSiteManagementClient.WebHostingPlans.ListAsync(_webSpaceDetails.Name);
+
+            if (webHostingPlanList.WebHostingPlans.Any(s => s.Name == WebHostingPlanName))
             {
-                // ServerFarm already exists (there can only be one ServerFarm per WebSpace)
-                if (serverFarmList.ServerFarms[0].Name == ServerFarmName)
-                {
-                    await _webSiteManagementClient.ServerFarms.UpdateAsync(_webSpaceDetails.Name,
-                        new ServerFarmUpdateParameters
-                        {
-                            NumberOfWorkers = _parameters.NumberOfWorkers,
-                            WorkerSize = _parameters.WorkerSize
-                        });
-                }
+                await _webSiteManagementClient.WebHostingPlans.UpdateAsync(_webSpaceDetails.Name, WebHostingPlanName,
+                    new WebHostingPlanUpdateParameters
+                    {
+                        NumberOfWorkers = _parameters.NumberOfWorkers,
+                        WorkerSize = _parameters.WorkerSize
+                    });
             }
             else
             {
-                await _webSiteManagementClient.ServerFarms.CreateAsync(_webSpaceDetails.Name,
-                    new ServerFarmCreateParameters
+                await _webSiteManagementClient.WebHostingPlans.CreateAsync(_webSpaceDetails.Name,
+                    new WebHostingPlanCreateParameters
                     {
+                        Name = WebHostingPlanName,
                         NumberOfWorkers = _parameters.NumberOfWorkers,
-                        WorkerSize = _parameters.WorkerSize                        
+                        WorkerSize = _parameters.WorkerSize
                     });
             }
         }
         internal async Task CreateWebSite()
         {
+            // Ensure there is a ServerFarm in the Subscription.
+            await UpdateWebHostingPlan();
+
             await _webSiteManagementClient.WebSites.CreateAsync(_webSpaceDetails.Name,
                 new WebSiteCreateParameters
                 {
                     Name = _parameters.WebSiteName,
-                    HostNames = new string[]{_parameters.WebSiteName +".azurewebsites.net"},
-                    ComputeMode = WebSiteComputeMode.Shared,
-                    SiteMode = WebSiteMode.Limited,
-                    ServerFarm = ServerFarmName,
+                    ServerFarm = WebHostingPlanName,
                     WebSpace = _webSpaceDetails,
-                    WebSpaceName = _webSpaceDetails.Name
                 });
         }
 
@@ -162,13 +158,13 @@ namespace DeployManageWebSites
             var newConnectionStrings = new List<WebSiteUpdateConfigurationParameters.ConnectionStringInfo>();
             newConnectionStrings.Add(new WebSiteUpdateConfigurationParameters.ConnectionStringInfo()
             {
-                Type = "SQLAzure", // SQLAzure, MySql, SqlServer, Custom
+                Type = ConnectionStringType.SqlAzure,
                 Name = "sqlazure_connection_string",
                 ConnectionString = "value_for_sqlazure_connection_string"
             });
             newConnectionStrings.Add(new WebSiteUpdateConfigurationParameters.ConnectionStringInfo()
             {
-                Type = "MySql", // SQLAzure, MySql, SqlServer, Custom
+                Type = ConnectionStringType.MySql,
                 Name = "mysql_connection_string",
                 ConnectionString = "value_for_mysql_connection_string"
             });
@@ -215,15 +211,13 @@ namespace DeployManageWebSites
             if (_parameters.UpgradePlan == WebSitePlans.Standard)
             {
                 // Standard mode requires a ServerFarm update
-                await UpdateServerFarm();
+                await UpdateWebHostingPlan();
             }
             var resp = await _webSiteManagementClient.WebSites.GetAsync(_webSpaceDetails.Name, _parameters.WebSiteName, new WebSiteGetParameters { });
             WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters
             {
                 HostNames = resp.WebSite.HostNames,
-                ServerFarm = _parameters.UpgradePlan == WebSitePlans.Standard ? ServerFarmName : resp.WebSite.ServerFarm,
-                ComputeMode = _parameters.UpgradePlan == WebSitePlans.Standard ? WebSiteComputeMode.Dedicated : WebSiteComputeMode.Shared,
-                SiteMode = _parameters.UpgradePlan == WebSitePlans.Free ? WebSiteMode.Limited : WebSiteMode.Basic
+                ServerFarm = _parameters.UpgradePlan == WebSitePlans.Standard ? WebHostingPlanName : resp.WebSite.ServerFarm
             };
 
             await _webSiteManagementClient.WebSites.UpdateAsync(_webSpaceDetails.Name, _parameters.WebSiteName, updateParameters);

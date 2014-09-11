@@ -23,6 +23,7 @@ using System.Xml.Linq;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Management.Storage.Models;
+using AzureQuickStarts.Common;
 
 namespace DeployManageAzureStorage
 {
@@ -88,7 +89,8 @@ namespace DeployManageAzureStorage
                 new StorageAccountCreateParameters
                 {
                     Location = _parameters.Region,
-                    Name = _parameters.StorageAccountName
+                    Name = _parameters.StorageAccountName,
+                    AccountType = _parameters.StorageAccountType
                 });
         }
 
@@ -125,12 +127,12 @@ namespace DeployManageAzureStorage
             _storageManagementClient.StorageAccounts.RegenerateKeys(kp);
         }
 
-        internal void UpdateStorageAccount(string Description, string Label, bool GeoReplicationEnabled)
+        internal void UpdateStorageAccount(string Description, string Label, string AccountType)
         {
             var parms = new StorageAccountUpdateParameters();
             parms.Description = Description;
-            parms.GeoReplicationEnabled = GeoReplicationEnabled;
             parms.Label = Label;
+            parms.AccountType = AccountType;
 
             _storageManagementClient.StorageAccounts.Update(
                 _parameters.StorageAccountName,

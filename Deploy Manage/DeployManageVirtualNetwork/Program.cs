@@ -52,7 +52,7 @@ namespace DeployManageVirtualNetwork
 
             var serviceParameters = new ManagementControllerParameters
             {
-                PublishSettingsFilePath = @"C:\somepath\somefile.publishsettings",
+                PublishSettingsFilePath = @"C:\Your.publishsettings",
                 AffinityGroupName = @"TestAffinityGroup",
                 VirtualNetworkSite =
                       @"<VirtualNetworkSite name=""test"" AffinityGroup=""{0}""

@@ -14,20 +14,21 @@
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Management.WebSites.Models;
-
-namespace DeployManageWebSites
+namespace AzureQuickStarts.Common
 {
-    internal enum WebSitePlans { Free, Shared, Standard };
+    using System;
+    using System.Security.Cryptography.X509Certificates;
+    using Microsoft.WindowsAzure;
 
-    internal class ManagementControllerParameters
+    internal class CertificateAuthenticationHelper
     {
-        internal string GeoRegion { get; set; }
-        internal string WebSiteName { get; set; }
-        internal WebSitePlans UpgradePlan { get; set; }
-        internal WorkerSizeOptions WorkerSize { get; set; }
-        internal int NumberOfWorkers { get; set; }
-        internal string PublishSettingsFilePath { get; set; }
+        internal static SubscriptionCloudCredentials GetCredentials(
+            string subscrtionId,
+            string base64EncodedCert)
+        {
+            return new CertificateCloudCredentials(subscrtionId,
+                new X509Certificate2(Convert.FromBase64String(base64EncodedCert)));
+        }
     }
 
 }

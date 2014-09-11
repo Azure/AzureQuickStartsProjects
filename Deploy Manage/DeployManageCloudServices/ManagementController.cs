@@ -20,7 +20,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using DeployManageCloudServices.MyCloudServiceManager;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Management.Compute;
 using Microsoft.WindowsAzure.Management.Compute.Models;
@@ -28,6 +27,7 @@ using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Management.Storage.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using AzureQuickStarts.Common;
 
 namespace DeployManageCloudServices
 {

@@ -14,6 +14,7 @@
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Management.Storage.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,7 +50,8 @@ namespace DeployManageVirtualMachines
                 VMName = "vmdemo",
                 RDPPort = 53389,
                 Region = "West US",
-                StorageAccountName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                StorageAccountName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()),
+                StorageAccountType = StorageAccountTypes.StandardGRS
             };
 
             // Request login/password

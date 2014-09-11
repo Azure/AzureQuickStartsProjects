@@ -14,20 +14,12 @@
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Management.WebSites.Models;
-
-namespace DeployManageWebSites
+namespace AzureQuickStarts.Common
 {
-    internal enum WebSitePlans { Free, Shared, Standard };
-
-    internal class ManagementControllerParameters
+    public class PublishSettingsSubscriptionItem
     {
-        internal string GeoRegion { get; set; }
-        internal string WebSiteName { get; set; }
-        internal WebSitePlans UpgradePlan { get; set; }
-        internal WorkerSizeOptions WorkerSize { get; set; }
-        internal int NumberOfWorkers { get; set; }
-        internal string PublishSettingsFilePath { get; set; }
+        public string SubscriptionId { get; set; }
+        public string ManagementCertificate { get; set; }
+        public string SubscriptionName { get; set; }
     }
-
 }

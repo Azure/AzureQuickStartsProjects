@@ -52,7 +52,7 @@ namespace DeployManageWebSites
                 UpgradePlan = WebSitePlans.Shared,
                 // WorkerSize and NumberOfWorkers are only used in Standard mode 
                 // Depending on your subscription type certain capacity restrictions may apply
-                WorkerSize = ServerFarmWorkerSize.Small,
+                WorkerSize = WorkerSizeOptions.Small,
                 NumberOfWorkers = 2
             };
 

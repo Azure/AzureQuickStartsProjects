@@ -14,6 +14,7 @@
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Management.Storage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace DeployManageVirtualMachines
     {
         internal string Region { get; set; }
         internal string StorageAccountName { get; set; }
+        internal string StorageAccountType { get; set; }
         internal string CloudServiceName { get; set; }
         internal string VMName { get; set; }
         internal string PublishSettingsFilePath { get; set; }

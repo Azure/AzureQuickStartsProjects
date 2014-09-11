@@ -14,19 +14,18 @@
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
 
+using AzureQuickStarts.Common;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Management.Compute;
 using Microsoft.WindowsAzure.Management.Compute.Models;
 using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Management.Storage.Models;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -99,7 +98,8 @@ namespace DeployManageVirtualMachines
                 new StorageAccountCreateParameters
                 {
                     Location = _parameters.Region,
-                    Name = _parameters.StorageAccountName
+                    Name = _parameters.StorageAccountName,
+                    AccountType = _parameters.StorageAccountType
                 });
             // Retrieve the primary key that will allow us to access Storage later
             var keys = await _storageManagementClient.StorageAccounts.GetKeysAsync(_parameters.StorageAccountName);

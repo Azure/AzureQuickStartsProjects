@@ -62,14 +62,14 @@ namespace DeployManageSQLDB
 
             var parameters = new SqlManagementControllerParameters
             {
-                PublishSettingsFilePath = @"[PATH][FILENAME]",
+                PublishSettingsFilePath = @"C:\Your.publishsettings",
                 ServerRegion = "West US",
                 ServerAdminUsername = "[ADMIN USER]",
-                ServerAdminPassword = "[ADMIN PASSWORD]",
+                ServerAdminPassword = "[ADM1N PASSW0RD]",
                 FirewallRuleAllowAzureServices = true,
                 FirewallRuleName = "Local IP",
-                FirewallRuleStartIP = "[FIREWALL RULE START]",
-                FirewallRuleEndIP = "[FIREWALL RULE END]",
+                FirewallRuleStartIP = "0.0.0.0",
+                FirewallRuleEndIP = "255.255.255.254", // Example Firewall Rule only. Do Not Use in Production.
                 DatabaseName = "Demo",
                 DatabaseEdition = "Web",
                 DatabaseMaxSizeInGB = 1,
