@@ -13,37 +13,41 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
-
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace DataBlobStorage
+namespace DataBlobStorageSample
 {
     /// <summary>
-    /// Azure Storage Blob Sample - Demonstrate how to use Blob Storage 
+    /// Azure Storage Blob Sample - Demonstrate how to use Blob Storage. Blob storage stores file data. A blob can be any 
+    /// type of text or binary data, such as a document, media file, or application installer. 
     /// 
-    /// References: 
+    /// Documentation References: 
     /// - What is a Storage Account - http://azure.microsoft.com/en-us/documentation/articles/storage-whatis-account/
     /// - Getting Started with Blobs - http://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/
+    /// - Blob Service Concepts - http://msdn.microsoft.com/en-us/library/dd179376.aspx 
+    /// - Blob Service REST API - http://msdn.microsoft.com/en-us/library/dd135733.aspx
+    /// - Blob Service C# API - http://msdn.microsoft.com/en-us/library/wa_storage_30_reference_home.aspx
     /// </summary>
     class Program
     {
-
+        //*************************************************************************************************************************
+        // Instructions: 
+        // TODO: 1. Create a Storage Account through the Portal and provide your [AccountName] and [AccountKey] in the App.Config 
+        //       2. Set the fullPathToFileForUpload variable below
+        //       3. Set breakpoints and run the project
+        //       4. Note that if you exit before the application terminates completely you might leave an image publically viewable
+        //*************************************************************************************************************************
         static void Main(string[] args)
         {
-            //*************************************************************************************************************************
-            //TODO: 1. Create a Storage Account through the Portal and provide your [AccountName] and [AccountKey] in the App.Config 
-            //      2. Set the fullPathToFileForUpload variable below
-            //      3. Set breakpoints and run the project
-            //      4. Note that if you exit before the application terminates completely you might leave an image publically viewable
-            //*************************************************************************************************************************
+            Console.WriteLine("Azure Storage Blob Sample\n");
 
             var imageToUpload = "HelloWorld.png";
 
@@ -95,7 +99,7 @@ namespace DataBlobStorage
         /// </summary>
         private static CloudBlobContainer CreateContainer(CloudBlobClient blobClient, string containerName, BlobContainerPermissions permissions)
         {
-            Console.WriteLine("> Create Container '{0}' and Set Permissions to {1}", containerName, permissions.ToString());
+            Console.WriteLine("1. Create Container '{0}' and set public access permissions to {1}\n", containerName, permissions.PublicAccess.ToString());
             CloudBlobContainer container = blobClient.GetContainerReference(containerName.ToLower());
             container.CreateIfNotExists();
             container.SetPermissions(permissions);
@@ -107,7 +111,7 @@ namespace DataBlobStorage
         /// </summary>
         private static CloudBlockBlob UploadBlockBlob(CloudBlobContainer container, string fileForUpload)
         {
-            Console.WriteLine("> Uploading BlockBlob");
+            Console.WriteLine("2. Uploading BlockBlob");
 
             // Verify the file to upload exists
             if (!File.Exists(fileForUpload))
@@ -120,7 +124,7 @@ namespace DataBlobStorage
                 blockBlob.UploadFromStream(filestream);
             }
 
-            Console.WriteLine("\t Blob is now available at {0}\n", blockBlob.Uri.ToString());
+            Console.WriteLine("Blob is now available at {0}\n", blockBlob.Uri.ToString());
 
             return blockBlob;
         }
@@ -130,12 +134,12 @@ namespace DataBlobStorage
         /// </summary>
         private static void ListBlobsInContainer(CloudBlobContainer container)
         {
-            Console.WriteLine("> List Blobs");
+            Console.WriteLine("3. List Blobs in Container");
             foreach (IListBlobItem blob in container.ListBlobs(null, false))
             {
                 // Blob type will be CloudBlockBlob, CloudPageBlob or CloudBlobDirectory
                 // Use blob.GetType() and cast to appropriate type to gain access to properties specific to each type
-                Console.WriteLine("\t {0} {1} \t {2}\n", blob.GetType(), Environment.NewLine, blob.Uri);
+                Console.WriteLine("{0} (type: {1})\n", blob.Uri, blob.GetType());
             }
 
         }
@@ -145,7 +149,7 @@ namespace DataBlobStorage
         /// </summary>
         private static void DownloadBlob(CloudBlobClient blobClient, Uri uri)
         {
-            Console.WriteLine("> Download Blob from {0}", uri.ToString());
+            Console.WriteLine("4. Download Blob from {0}", uri.ToString());
             //Demonstrate how to download a blob from a Uri to the file system 
 
             ICloudBlob blob = blobClient.GetBlobReferenceFromServer(uri);
@@ -153,7 +157,7 @@ namespace DataBlobStorage
             using (var fs = File.OpenWrite(downloadToPath))
             {
                 blob.DownloadToStream(fs);
-                Console.WriteLine("\t Blob downloaded to file: {0}\n", downloadToPath);
+                Console.WriteLine("Blob downloaded to local file system location: {0}\n", downloadToPath);
             }
 
         }
@@ -163,12 +167,12 @@ namespace DataBlobStorage
         /// </summary>
         private static void DeleteBlob(CloudBlobClient blobClient, Uri uri)
         {
-            Console.WriteLine("> Delete Blob");
+            Console.WriteLine("5. Delete Blob");
 
             ICloudBlob blob = blobClient.GetBlobReferenceFromServer(uri);
             var success = blob.DeleteIfExists();
 
-            Console.WriteLine("\t {0} Deleting Blob {1}\n", success ? "Successful" : "Unsuccessful", uri.ToString());
+            Console.WriteLine("{0} deletion of blob {1}\n", success ? "Successful" : "Unsuccessful", uri.ToString());
         }
     }
 }
