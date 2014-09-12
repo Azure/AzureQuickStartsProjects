@@ -34,7 +34,7 @@ namespace DataBlobStorageSample
     /// - Getting Started with Blobs - http://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/
     /// - Blob Service Concepts - http://msdn.microsoft.com/en-us/library/dd179376.aspx 
     /// - Blob Service REST API - http://msdn.microsoft.com/en-us/library/dd135733.aspx
-    /// - Blob Service C# API - http://msdn.microsoft.com/en-us/library/wa_storage_30_reference_home.aspx
+    /// - Blob Service C# API - http://go.microsoft.com/fwlink/?LinkID=398944
     /// </summary>
     class Program
     {
