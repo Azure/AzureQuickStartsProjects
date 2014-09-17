@@ -51,6 +51,7 @@ namespace DataBlobStorageSample
 
             var imageToUpload = "HelloWorld.png";
 
+            // Retrieve storage account information from connection string
             CloudStorageAccount storageAccount = CreateStorageAccountFromConnectionString(CloudConfigurationManager.GetSetting("StorageConnectionString"));
 
             // Create a blob client for interacting with the blob service
@@ -71,6 +72,7 @@ namespace DataBlobStorageSample
             // Clean up after the demo 
             DeleteBlob(blobClient, blockBlob.Uri);
 
+            Console.WriteLine("Press any key to exit");
             Console.ReadLine();
         }
 
