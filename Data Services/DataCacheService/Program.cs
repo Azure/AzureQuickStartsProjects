@@ -14,154 +14,264 @@
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
 
-using DataCacheService.DataModel;
-using Microsoft.ApplicationServer.Caching;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using StackExchange.Redis;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Text;
 
 namespace DataCacheService
 {
     class Program
     {
-        private const string PRODUCTS = "products";
+        //***************************************************************************************************************************
+        // TODO: provision your cache, configure the cache client, and configure the ConnectionMultiplexer. In this example the
+        //       ConnectionMultiplexer is configured using lazy initialization which provides a thread safe way to ensure that only
+        //       one ConnectedMultiplexer instance is used. 
+        //       For instructions on creating an Azure Redis Cache instance and connecting to a cache, see:
+        //           http://aka.ms/CreateAzureRedisCache 
+        //           http://aka.ms/ConfigureAzureRedisCacheClients
+        // NOTE: Never store credentials in source code. In this example they are hardcoded into the code for simplicity. For information
+        //       on how to store credentials, see:
+        //           Azure Websites: How Application Strings and Connection Strings Work 
+        //           http://azure.microsoft.com/blog/2013/07/17/windows-azure-web-sites-how-application-strings-and-connection-strings-work/
+        //***************************************************************************************************************************
+        private static Lazy<ConnectionMultiplexer> lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
+        {
+            // Replace these values with the values from your Azure Redis Cache instance.
+            // For more information, see http://aka.ms/ConnectToTheAzureRedisCache
+            return ConnectionMultiplexer.Connect("<your cache name here>.redis.cache.windows.net,abortConnect=false,ssl=true,password=...");
+        });
+
+        public static ConnectionMultiplexer Connection
+        {
+            get
+            {
+                return lazyConnection.Value;
+            }
+        }
 
         static void Main(string[] args)
         {
-            //***************************************************************************************************************************
-            //TODO: provision your cache and update App.Config with your [cache_endpoint_identifier] (e.g yourendpoint.cache.windows.net)
-            //      and [Authentication Key] http://go.microsoft.com/fwlink/?LinkID=325011
-            //***************************************************************************************************************************
 
-            //1. Option1: Get a handle to named cached while creating an instance
-            Console.WriteLine("1. Get a handle to named cached while creating an instance");
-            DataCache cache = new DataCache("default");
+            // 1. Get a reference to your Azure Redis Cache.
+            //    Azure Redis Cache instances have a default of 16 databases,
+            //    numbered 0-15, with 0 being the default database if none
+            //    is specified. These databases share the memory of the cache.
+            //    For more information, see http://aka.ms/ConfigureAzureRedisCache  
+            Console.WriteLine("1. Get a reference to the redis cache database");
+            IDatabase cache = Connection.GetDatabase();
 
-            //2. Alternatively you can get a handle to your cache using DataCacheFactory.  You dont have to do both.
-            Console.WriteLine("2. Alternatively you can get a handle to your cache using DataCacheFactory");
+            // 2. Store integral data types in the cache and retrieve them. In the StackExchange.Redis
+            //    client, StringSet and StringGet are used for integral types, even if they are not strings.
+            //    For more information, see http://aka.ms/CachingDataInAzureRedisCache
+            Console.WriteLine("2. Store and retrieve integral types from the cache.");
+            cache.StringSet("item1", "Value 1");
+            cache.StringSet("item2", 25);
 
-            DataCacheFactory cacheFactory = new DataCacheFactory();
-            cache = cacheFactory.GetDefaultCache();
-            // Or DataCache cache = cacheFactory.GetCache("MyCache");
-            // cache can now be used to add and retrieve items.
+            string item1 = cache.StringGet("item1");
+            int item2 = (int)cache.StringGet("item2");
 
-            // 3. Lookup items in cache, if no items present retrieve and store from data source
-            // Add products to the cache, keyed by "products"
-            Console.WriteLine("3. Lookup items in cache, if no items present retrieve from data source and store in cache");
+            Console.WriteLine("Item 1: {0}, Item 2: {1}", item1, item2);
 
-            //First hit will be slow as hitting data source. The below demonstrates a standard pattern for request and optionally hydrate the cache
-            var products = cache.Get(PRODUCTS) as IList<Product>;
-            if (products == null)
+            // 3. To store .NET objects in the cache, they must be serialized. This is the responsibility
+            //    of the application developer. This example serializes and deserializes an instance of
+            //    the Employee class defined below using the BinaryFormatter.
+            //    For more information, see http://aka.ms/StoreNetObjectsInAzureRedisCache
+            Console.WriteLine("3. Store and retrieve .NET objects from the cache.");
+            Employee e25 = new Employee(25, "Clayton Gragg");
+            cache.StringSet("e25", Serialize(e25));
+
+            // Retrieve the employee from the cache, and write it to the console.
+            Console.WriteLine(Deserialize<Employee>(cache.StringGet("e25")));
+
+            // One way to do this is to use extension methods to extend IDatabase. This next example
+            // uses a SampleStackExchangeRedisExtensions class to add Get and Set methods that
+            // serialize and deserialize .NET objects for you using BinaryFormatter.
+            // For more information, see http://aka.ms/SampleStackExchangeRedisExtensions  
+            // Placing an object in the cache with the same key as another item replaces that item,
+            // as shown in this next example.
+            cache.Set("e25", e25);
+
+            // Retrieve it as an Employee.
+            Employee e25copy = cache.Get<Employee>("e25");
+
+            // Retrieve it as an object.
+            e25copy = (Employee)cache.Get("e25");
+
+            // 4. Lookup items in cache, if no items present retrieve and store from data source. This is
+            //    known as the cache-aside pattern.
+            Console.WriteLine("4. Lookup items in cache, if no items present retrieve from data source and store in cache");
+
+            // First hit will be slower since the item is not in the cache.
+            var employees = cache.Get("Employees") as IList<Employee>;
+            if (employees == null)
             {
-                // "Item" not in cache. Obtain it from specified data source
+                // Item not in cache. Obtain it from specified data source
                 // and add it.
-                products = GetDataFromDataSource();
-                cache.Add(PRODUCTS, products);
+                // GetDataSource is a simulated database call that returns an IList<Employee>.
+                employees = GetDataFromDataSource();
+                cache.Set("employees", employees);
             }
 
-            //Subsequent hits will be direct from cache so long as item has not timed out
-            //the GetCollectionFromCache demonstrates one way to implement the above using a generic function
-            Console.WriteLine("4. Subsequent hits will be direct from cache so long as item has not timed out");
+            // Subsequent hits will be direct from cache so long as item has not timed out.
+            Console.WriteLine("Subsequent hits will be direct from cache so long as item has not timed out.");
+            LogEmployeesToConsole(cache.Get<IList<Employee>>("employees"));
 
-            products = GetCollectionFromCache(cache, PRODUCTS, () => { return GetDataFromDataSource(); });
-            LogProductsToConsole(products);
-
-            // Attempting to .Add an item with the same key will throw a DataCacheException
-            Console.WriteLine("5. Attempting to .Add an item with the same key will throw a DataCacheException");
-
-            try
+            // To remove an item call KeyDelete with the item's key.
+            Console.WriteLine("7. To remove an item call Remove");
+            if (cache.KeyDelete("employees"))
             {
-                cache.Add(PRODUCTS, products);
+                Console.WriteLine("Item under key 'employees' removed from cache");
             }
-            catch (DataCacheException ex)
+
+            // 8. You can also cache an item with a specific expiration time by providing a timeout.
+            Console.WriteLine("8. You can also cache an item with a specific expiration time by providing a timeout.");
+
+            // In this example the timeout is 5 seconds.
+            cache.StringSet("item25", "Time sensitive item", TimeSpan.FromSeconds(5));
+
+            Console.WriteLine("Item present in cache: {0}", cache.StringGet("item25"));
+            Console.Write("Sleeping for 6 seconds");
+            for (int i = 0; i < 12; i++)
             {
-                Console.WriteLine("\t{0}", ex.Message.ToString());
+                Console.Write(".");
+                Thread.Sleep(500);
             }
+            Console.WriteLine();
+            Console.WriteLine("Attempt to read expired item from cache: {0}", cache.StringGet("item25"));
 
-            // Calling .Put will add the item or if it exists, it will replace it
-            Console.WriteLine("6. Call .Put will add the item or if it exists, it will replace it");
-            products[1].Name += DateTime.Now;
-
-            cache.Put(PRODUCTS, products);
-
-            LogProductsToConsole(cache.Get(PRODUCTS) as IList<Product>);
-
-            //To remove an item call .Remove
-            Console.WriteLine("7. To remove an item call .Remove");
-            if (cache.Remove(PRODUCTS))
-                Console.WriteLine("\tItem under key '{0}' removed from cache", PRODUCTS);
-
-            // You can also cache an item with an expiration different to the default by providing a timeout
-            Console.WriteLine("8. You can also cache an item with an expiration different to the default by providing a timeout");
-
-            cache.Add(PRODUCTS, products, TimeSpan.FromMinutes(30));
-
-            // Get a DataCacheItem object that contains information about
-            // item in the cache. If there is no object keyed by "products" null
-            // is returned. 
-            Console.WriteLine("9.  Method .GetCacheItem returns DataCacheItem object that contains information about the cached item");
-
-            DataCacheItem item = cache.GetCacheItem(PRODUCTS);
-            TimeSpan timeRemaining = item.Timeout;
-            Console.WriteLine("\tDataCacheItem has a:");
-
-            Console.WriteLine("\t\t CacheName:\t{0}", item.CacheName);
-            Console.WriteLine("\t\t RegionName:\t{0}", item.RegionName);
-            Console.WriteLine("\t\t Key:\t\t{0}", item.Key);
-            Console.WriteLine("\t\t Size:\t\t{0}", item.Size);
-            Console.WriteLine("\t\t Timeout:\t{0}", item.Timeout.ToString());
-            Console.WriteLine("\t\t Tag Count:\t{0}", item.Tags.Count);
-            Console.WriteLine("\t\t Value:\t{0}", item.Value.ToString());
-            Console.WriteLine("\t\t Version:\t{0}", item.Version.ToString());
-
-            Console.ReadLine();
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
         }
 
-        private static void LogProductsToConsole(IList<Product> products)
+        private static void LogEmployeesToConsole(IList<Employee> employees)
         {
-            foreach (var product in products)
-                Console.WriteLine("\t Product Id: {0}, Name: {1}", product.Id, product.Name);
-        }
-
-        /// <summary>
-        /// Returns a collection of T from the cache for a given key.  If the cache is empty Func QueryDataStore will retrieve 
-        /// data from the data store and this method will then add or update the cache with the Functions result.
-        /// </summary>
-        /// <typeparam name="T">Type</typeparam>
-        /// <param name="cache">DataCache instance</param>
-        /// <param name="key">The key to lookup from the DataCache instance</param>
-        /// <param name="QueryDataStore">A function returning a IList of T that is used to retrieve data from your datastore when the requested key is empty</param>
-        /// <returns></returns>
-        static IList<T> GetCollectionFromCache<T>(DataCache cache, string key, Func<IList<T>> QueryDataStore)
-        {
-            IList<T> results = cache.Get(key) as IList<T>;
-
-            // If results are null hit the data store
-            if (results == null)
+            foreach (var employee in employees)
             {
-                results = QueryDataStore();
-                cache.Put(key, results);
+                Console.WriteLine(employee);
             }
-
-            return results;
         }
 
-        static IList<Product> GetDataFromDataSource()
+        static IList<Employee> GetDataFromDataSource()
         {
-            // you would normally hit your repository, service, storage
-            // adding a delay here to simulate a read from disk/service
+            // You would normally hit your repository, service, storage here.
+            // Adding a delay here to simulate a read from disk/service.
             Thread.Sleep(200);
 
-            var products = new List<Product>();
-            products.Add(new Product() { Id = 0, Name = "Product 0" });
-            products.Add(new Product() { Id = 1, Name = "Product 1" });
+            var employees = new List<Employee>();
+            for (int i = 0; i < 10; i++)
+            {
+                employees.Add(new Employee(i, string.Format("Employee {0}", i)));
+            }
 
-            return products;
+            return employees;
         }
 
+        // Serialize a .NET object to a byte array.
+        static byte[] Serialize(object o)
+        {
+            if (o == null)
+            {
+                return null;
+            }
 
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                binaryFormatter.Serialize(memoryStream, o);
+                byte[] objectDataAsStream = memoryStream.ToArray();
+                return objectDataAsStream;
+            }
+        }
 
+        // Deserialize a .NET object from a byte array.
+        static T Deserialize<T>(byte[] stream)
+        {
+            if (stream == null)
+            {
+                return default(T);
+            }
 
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            using (MemoryStream memoryStream = new MemoryStream(stream))
+            {
+                T result = (T)binaryFormatter.Deserialize(memoryStream);
+                return result;
+            }
+        }
+    }
 
+    [Serializable]
+    class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public Employee(int EmployeeId, string Name)
+        {
+            this.Id = EmployeeId;
+            this.Name = Name;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("EmployeeId: {0}, Employee Name: {1}", Id, Name);
+        }
+    }
+
+    // Sample extension class that extends StackExchange.Redis.IDatabase and provides
+    // Get and Set methods that perform the required serialization of .NET objects
+    // using BinaryFormatter.
+    // For more information, see http://aka.ms/SampleStackExchangeRedisExtensions  
+    public static class SampleStackExchangeRedisExtensions
+    {
+        public static T Get<T>(this IDatabase cache, string key)
+        {
+            return Deserialize<T>(cache.StringGet(key));
+        }
+
+        public static object Get(this IDatabase cache, string key)
+        {
+            return Deserialize<object>(cache.StringGet(key));
+        }
+
+        public static void Set(this IDatabase cache, string key, object value)
+        {
+            cache.StringSet(key, Serialize(value));
+        }
+
+        static byte[] Serialize(object o)
+        {
+            if (o == null)
+            {
+                return null;
+            }
+
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                binaryFormatter.Serialize(memoryStream, o);
+                byte[] objectDataAsStream = memoryStream.ToArray();
+                return objectDataAsStream;
+            }
+        }
+
+        static T Deserialize<T>(byte[] stream)
+        {
+            if (stream == null)
+            {
+                return default(T);
+            }
+
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            using (MemoryStream memoryStream = new MemoryStream(stream))
+            {
+                T result = (T)binaryFormatter.Deserialize(memoryStream);
+                return result;
+            }
+        }
     }
 }
