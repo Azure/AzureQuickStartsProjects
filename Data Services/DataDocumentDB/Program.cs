@@ -14,34 +14,6 @@
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
 
-namespace DataDocumentDB.Models
-{
-    using Microsoft.Azure.Documents;
-    
-    // These classes represent an object that extend the DocumentDB base class for Document
-    class Family : Document
-    {
-        public string FamilyName { get; set; }
-        public Parent[] Parents { get; set; }
-        public Child[] Children { get; set; }
-        public Pet[] Pets { get; set; }
-    }
-    class Parent
-    {
-        public string FirstName { get; set; }
-    }
-    class Child
-    {
-        public string FirstName { get; set; }
-        public string Gender { get; set; }
-        public int Grade { get; set; }
-    }
-    class Pet
-    {
-        public string Name { get; set; }
-        public string Type { get; set; }
-    }
-}
 
 namespace DataDocumentDB
 {
@@ -168,7 +140,7 @@ namespace DataDocumentDB
                               .FirstOrDefault();
 
             // For this sample, if we found a DocumentCollection matching our criteria we are simply deleting the collection
-            // and then recreating it. This is the easiest way to clear out existing doucments that might be left over in a collection
+            // and then recreating it. This is the easiest way to clear out existing documents that might be left over in a collection
             //
             // NOTE: This is not the expected behavior for a production application. 
             // You would likely do the same as with a Database previously. If found, then return, else create
