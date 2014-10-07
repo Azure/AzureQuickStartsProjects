@@ -1,8 +1,8 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>Service Bus Messaging With Queues</Name>
-    <Description>Simple demonstration of how to use Azure Service Bus Queues for messaging.  This approach can be applied to de-couple backend + frontend roles and can also be used to load balance and load level processing for variable load scenarios</Description>
-    <DefaultName>AppServicesSvcBusQ</DefaultName>
+    <Name>Deploy and Manage Azure Storage</Name>
+    <Description>Illustrates usage of APIs related to Azure storage accounts, based on the Azure Management Libraries.  Create a storage account, update its properties, get a connection string, update its access key, delete the account.</Description>
+    <DefaultName>DeployManageAzureStorage</DefaultName>
     
     <ProjectType>CSharp</ProjectType>
     <ProjectSubType></ProjectSubType>
@@ -17,7 +17,7 @@
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <Project TargetFileName="AppServicesSvcBusQ.csproj" File="AppServicesSvcBusQ.csproj" ReplaceParameters="true">
+    <Project TargetFileName="DeployManageAzureStorage.csproj" File="DeployManageAzureStorage.csproj" ReplaceParameters="true">
     </Project>
   </TemplateContent>
  <WizardExtension>

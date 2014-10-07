@@ -21,7 +21,7 @@
     </Project>
   </TemplateContent>
   <WizardExtension>
-    <Assembly>ProjectWizard, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=f30ae472f039a534</Assembly>
+    <Assembly>ProjectWizard, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=caa87a55fd76d99d</Assembly>
     <FullClassName>ProjectWizard.Wizard</FullClassName>
   </WizardExtension>
 </VSTemplate>

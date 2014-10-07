@@ -1,8 +1,8 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>Service Bus Messaging With Queues</Name>
-    <Description>Simple demonstration of how to use Azure Service Bus Queues for messaging.  This approach can be applied to de-couple backend + frontend roles and can also be used to load balance and load level processing for variable load scenarios</Description>
-    <DefaultName>AppServicesSvcBusQ</DefaultName>
+    <Name>Deploy and Manage SQL Database</Name>
+    <Description>Deploy and manage a new Azure SQL DB Server and SQL DB Database with the Azure Management Libraries</Description>
+    <DefaultName>DeployManageSQLDB</DefaultName>
     
     <ProjectType>CSharp</ProjectType>
     <ProjectSubType></ProjectSubType>
@@ -17,10 +17,10 @@
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <Project TargetFileName="AppServicesSvcBusQ.csproj" File="AppServicesSvcBusQ.csproj" ReplaceParameters="true">
+    <Project TargetFileName="DeployManageSQLDB.csproj" File="DeployManageSQLDB.csproj" ReplaceParameters="true">
     </Project>
   </TemplateContent>
- <WizardExtension>
+  <WizardExtension>
     <Assembly>ProjectWizard, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=caa87a55fd76d99d</Assembly>
     <FullClassName>ProjectWizard.Wizard</FullClassName>
   </WizardExtension>
