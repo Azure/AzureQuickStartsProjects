@@ -49,11 +49,12 @@ namespace DeployManageWebSites
                 PublishSettingsFilePath = @"C:\Your.publishsettings",
                 WebSiteName = string.Format("MgmtLibWebSiteDemo{0}", DateTime.Now.Ticks),
                 GeoRegion = GeoRegionNames.NorthEurope,
-                UpgradePlan = WebSitePlans.Shared,
+                UpgradePlan = WebSitePlans.Free,
                 // WorkerSize and NumberOfWorkers are only used in Standard mode 
                 // Depending on your subscription type certain capacity restrictions may apply
-                WorkerSize = WorkerSizeOptions.Small,
-                NumberOfWorkers = 2
+                // UpgradePlan = WebSitePlans.Standard,
+                // WorkerSize = WorkerSizeOptions.Small,
+                // NumberOfWorkers = 1
             };
 
             try
