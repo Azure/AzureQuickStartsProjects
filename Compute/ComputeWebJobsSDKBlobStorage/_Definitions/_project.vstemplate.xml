@@ -20,4 +20,8 @@
     <Project TargetFileName="ComputeWebJobsSDKBlobStorage.csproj" File="ComputeWebJobsSDKBlobStorage.csproj" ReplaceParameters="true">      
     </Project>
   </TemplateContent>
+  <WizardExtension>
+    <Assembly>ProjectWizard, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=caa87a55fd76d99d</Assembly>
+    <FullClassName>ProjectWizard.Wizard</FullClassName>
+  </WizardExtension>
 </VSTemplate>
