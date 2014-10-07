@@ -93,7 +93,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_Definitions\_project.vstemplate.xml" />
+    <Content Include="_Definitions\_project.vstemplate.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="_preprocess.xml" />
     <Content Include="sw-file-icon.png" />
   </ItemGroup>
