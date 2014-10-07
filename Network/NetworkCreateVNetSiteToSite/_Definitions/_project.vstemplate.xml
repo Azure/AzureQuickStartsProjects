@@ -1,6 +1,6 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>Virtual Network Site-to-Site Tutorial</Name>
+    <Name>Virtual Network Site-to-Site</Name>
     <Description>This tutorial walks you through the steps to create a cross-premises virtual network. The type of connection we will create is a site-to-site connection</Description>
     <DefaultName>NetworkCreateVNetSiteToSite</DefaultName>
     

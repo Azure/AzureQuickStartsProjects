@@ -1,6 +1,6 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>Azure Recovery Services Tutorial</Name>
+    <Name>Azure Recovery Services</Name>
     <Description>This tutorial demonstrates how to back up your files and data from Windows Server to Azure using Azure Recovery Services.</Description>
     <DefaultName>DataRecoveryServices</DefaultName>
     

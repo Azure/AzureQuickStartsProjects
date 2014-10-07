@@ -1,6 +1,6 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>Traffic Manager Tutorial</Name>
+    <Name>Traffic Manager</Name>
     <Description>This tutorial demonstrates how you can quickly create a Traffic Manager profile with a basic configuration using Quick Create in the Management Portal. Use Traffic Manager as part of your overall networking solution - Traffic Manager applies an intelligent policy engine to the DNS queries on your domain names so that you can send traffic to the best data center for performance, business continuity, price, compliance, legal, or tax purposes</Description>
 
     <DefaultName>TrafficManagerTutorial</DefaultName>

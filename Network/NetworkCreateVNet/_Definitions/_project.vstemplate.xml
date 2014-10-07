@@ -1,6 +1,6 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>Virtual Network Tutorial</Name>
+    <Name>Virtual Network</Name>
     <Description>This tutorial walks you through the steps to create a basic Azure Virtual Network using the Azure Management Portal. For more information about Azure Virtual Network</Description>
     <DefaultName>NetworkCreateVNet</DefaultName>
     
