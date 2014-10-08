@@ -17,7 +17,7 @@
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <Project TargetFileName="ComputeWebJobsSDKTableStorage.csproj" File="ComputeWebJobsSDKTableStorage.csproj" ReplaceParameters="true">      
+    <Project TargetFileName="ComputeWebJobsSDKTable.csproj" File="ComputeWebJobsSDKTable.csproj" ReplaceParameters="true">      
     </Project>
   </TemplateContent>
   <WizardExtension>

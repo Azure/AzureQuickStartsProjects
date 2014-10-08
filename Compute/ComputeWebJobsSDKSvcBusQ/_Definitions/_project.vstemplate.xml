@@ -17,7 +17,7 @@
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <Project TargetFileName="ComputeWebJobsSDKServiceBus.csproj" File="ComputeWebJobsSDKServiceBus.csproj" ReplaceParameters="true">      
+    <Project TargetFileName="ComputeWebJobsSDKSvcBusQ.csproj" File="ComputeWebJobsSDKSvcBusQ.csproj" ReplaceParameters="true">      
     </Project>
   </TemplateContent>
   <WizardExtension>
