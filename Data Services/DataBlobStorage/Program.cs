@@ -47,7 +47,7 @@ namespace DataBlobStorageSample
         //*************************************************************************************************************************
         static void Main(string[] args)
         {
-            Console.WriteLine("Azure Storage Blob Sample\n");
+            Console.WriteLine("Azure Storage Blob Sample\n ");
 
             var imageToUpload = "HelloWorld.png";
 
