@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataTableStorage.Model
+namespace DataTableStorageSample.Model
 {
 
     // Entities map to C# objects using a custom class derived from TableEntity. 
