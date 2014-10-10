@@ -13,22 +13,21 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //----------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace DataBlobStorageSample
 {
+    using System;
+    using Microsoft.WindowsAzure;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Blob;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    
     /// <summary>
-    /// Azure Storage Blob Sample - Demonstrate how to use Blob Storage. Blob storage stores file data. A blob can be any 
-    /// type of text or binary data, such as a document, media file, or application installer. 
-    /// 
+    /// Azure Storage Blob Sample - Demonstrate how to use the Blob Storage service. 
+    /// Blob storage stores unstructured data such as text, binary data, documents or media files. 
+    /// Blobs can be accessed from anywhere in the world via HTTP or HTTPS.
     /// Documentation References: 
     /// - What is a Storage Account - http://azure.microsoft.com/en-us/documentation/articles/storage-whatis-account/
     /// - Getting Started with Blobs - http://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/
@@ -36,146 +35,124 @@ namespace DataBlobStorageSample
     /// - Blob Service REST API - http://msdn.microsoft.com/en-us/library/dd135733.aspx
     /// - Blob Service C# API - http://go.microsoft.com/fwlink/?LinkID=398944
     /// </summary>
-    class Program
+    public class Program
     {
-        //*************************************************************************************************************************
+        ////*************************************************************************************************************************
         // Instructions: 
         // TODO: 1. Create a Storage Account through the Portal and provide your [AccountName] and [AccountKey] in the App.Config 
-        //       2. Set the fullPathToFileForUpload variable below
-        //       3. Set breakpoints and run the project
-        //       4. Note that if you exit before the application terminates completely you might leave an image publically viewable
-        //*************************************************************************************************************************
+        //       2. Set breakpoints and run the project
+        ////*************************************************************************************************************************
         static void Main(string[] args)
         {
-            Console.WriteLine("Azure Storage Blob Sample\n");
+            Console.WriteLine("Azure Storage Blob Samples\n");
 
-            var imageToUpload = "HelloWorld.png";
+            // Block blob basics
+            BasicStorageBlockBlobOperations().Wait();
 
-            // Retrieve storage account information from connection string
-            CloudStorageAccount storageAccount = CreateStorageAccountFromConnectionString(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-
-            // Create a blob client for interacting with the blob service
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-
-            // Create a container for organizing blobs within the storage account granting it public access
-            CloudBlobContainer container = CreateContainer(blobClient, "democontainer", new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
-
-            // Upload a BlockBlob to the newly creating container
-            CloudBlockBlob blockBlob = UploadBlockBlob(container, imageToUpload);
-
-            // List all the blobs in the container 
-            ListBlobsInContainer(container);
-
-            // Download a blob to your file system
-            DownloadBlob(blobClient, blockBlob.Uri);
-
-            // Clean up after the demo 
-            DeleteBlob(blobClient, blockBlob.Uri);
+            // Page blob basics
+            BasicStoragePageBlobOperations().Wait();
 
             Console.WriteLine("Press any key to exit");
             Console.ReadLine();
         }
 
         /// <summary>
-        /// This method validates the connection string information in app.config and throws an exception if it looks like 
-        /// the user hasn't updated this to valid values. 
+        /// Basic operations to work with block blobs
         /// </summary>
-        private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)
+        /// <returns>Task<returns>
+        private static async Task BasicStorageBlockBlobOperations()
         {
-            CloudStorageAccount storageAccount;
-            try
-            {
-                storageAccount = CloudStorageAccount.Parse(storageConnectionString);
-            }
-            catch (System.FormatException)
-            {
-                Console.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file.");
-                throw;
-            }
-            return storageAccount;
-        }
+            const string ImageToUpload = "HelloWorld.png";
 
-        /// <summary>
-        /// Create a container for organizing blobs within this storage account. By default containers are private so 
-        /// we also set the permsissions on this to be public thus enabling anyone to view the blobs without requiring authentication. 
-        /// </summary>
-        private static CloudBlobContainer CreateContainer(CloudBlobClient blobClient, string containerName, BlobContainerPermissions permissions)
-        {
-            Console.WriteLine("1. Create Container '{0}' and set public access permissions to {1}\n", containerName, permissions.PublicAccess.ToString());
-            CloudBlobContainer container = blobClient.GetContainerReference(containerName.ToLower());
-            container.CreateIfNotExists();
-            container.SetPermissions(permissions);
-            return container;
-        }
+            // Retrieve storage account information from connection string
+            // How to create a storage connection string - http://msdn.microsoft.com/en-us/library/azure/ee758697.aspx
+            CloudStorageAccount storageAccount = storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
 
-        /// <summary>
-        /// Upload an image to blob storage. If the image already exists it will be overwritten. 
-        /// </summary>
-        private static CloudBlockBlob UploadBlockBlob(CloudBlobContainer container, string fileForUpload)
-        {
+            // Create a blob client for interacting with the blob service.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Create a container for organizing blobs within the storage account.
+            Console.WriteLine("1. Creating Container");
+            CloudBlobContainer container = blobClient.GetContainerReference("democontainerblockblob");
+            await container.CreateIfNotExistsAsync();
+            
+            // To view the uploaded blob in a browser, you need to set permissions to allow public access to blobs in this container.
+            // Then you can view the image using: https://[InsertYourStorageAccountNameHere].blob.core.windows.net/democontainer/HelloWorld.png
+            // await container.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+
+            // Upload a BlockBlob to the newly creating container
             Console.WriteLine("2. Uploading BlockBlob");
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(ImageToUpload);
+            await blockBlob.UploadFromFileAsync(ImageToUpload, FileMode.Open);
 
-            // Verify the file to upload exists
-            if (!File.Exists(fileForUpload))
-                throw new FileNotFoundException("File to upload was not found on your local file system.", fileForUpload);
-
-            // Create a reference to blob that we want to upload and upload it
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(Path.GetFileName(fileForUpload));
-            using (var filestream = File.OpenRead(fileForUpload))
+            // List all the blobs in the container 
+            Console.WriteLine("3. List Blobs in Container");
+            foreach (IListBlobItem blob in container.ListBlobs())
             {
-                blockBlob.UploadFromStream(filestream);
+                // Blob type will be CloudBlockBlob, CloudPageBlob or CloudBlobDirectory
+                // Use blob.GetType() and cast to appropriate type to gain access to properties specific to each type
+                Console.WriteLine("- {0} (type: {1})\n", blob.Uri, blob.GetType());
             }
 
-            Console.WriteLine("Blob is now available at {0}\n", blockBlob.Uri.ToString());
+            // Download a blob to your file system
+            Console.WriteLine("4. Download Blob from {0}", blockBlob.Uri.AbsoluteUri);
+            await blockBlob.DownloadToFileAsync(string.Format("./CopyOf{0}", ImageToUpload), FileMode.Create);
 
-            return blockBlob;
+            // Clean up after the demo 
+            Console.WriteLine("5. Delete blok Blob and container");
+            await blockBlob.DeleteAsync();
+            await container.DeleteAsync();
         }
 
         /// <summary>
-        /// List all the blobs in a container - see getting started for more details on listing hierarchies and blob properties
+        /// Basic operations to work with page blobs
         /// </summary>
-        private static void ListBlobsInContainer(CloudBlobContainer container)
+        /// <returns>Task</returns>
+        private static async Task BasicStoragePageBlobOperations()
         {
+            const string PageBlobName = "samplepageblob";
+
+            // Retrieve storage account information from connection string
+            // How to create a storage connection string - http://msdn.microsoft.com/en-us/library/azure/ee758697.aspx
+            CloudStorageAccount storageAccount = storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+            // Create a blob client for interacting with the blob service.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Create a container for organizing blobs within the storage account.
+            Console.WriteLine("1. Creating Container");
+            CloudBlobContainer container = blobClient.GetContainerReference("democontainerpageblob");
+            await container.CreateIfNotExistsAsync();
+
+            // Create a page blob to the newly creating container. Page blob needs to be 
+            Console.WriteLine("2. Creating Page Blob");
+            CloudPageBlob pageBlob = container.GetPageBlobReference(PageBlobName);
+            await pageBlob.CreateAsync(512 * 2 /*size*/); // size needs to be multiple of 512 bytes
+
+            // Write to a page blob 
+            Console.WriteLine("2. Write to a Page Blob");
+            byte[] samplePagedata = new byte[512];
+            Random random = new Random();
+            random.NextBytes(samplePagedata);
+            await pageBlob.UploadFromByteArrayAsync(samplePagedata, 0, samplePagedata.Length);
+
+            // List all blobs in this container
             Console.WriteLine("3. List Blobs in Container");
-            foreach (IListBlobItem blob in container.ListBlobs(null, false))
+            foreach (IListBlobItem blob in container.ListBlobs())
             {
                 // Blob type will be CloudBlockBlob, CloudPageBlob or CloudBlobDirectory
                 // Use blob.GetType() and cast to appropriate type to gain access to properties specific to each type
                 Console.WriteLine("{0} (type: {1})\n", blob.Uri, blob.GetType());
             }
 
-        }
+            // Read from a page blob
+            Console.WriteLine("4. Read from a Page Blob");
+            int bytesRead = await pageBlob.DownloadRangeToByteArrayAsync(samplePagedata, 0, 0, samplePagedata.Count());
 
-        /// <summary>
-        /// Download a blob to the local file system
-        /// </summary>
-        private static void DownloadBlob(CloudBlobClient blobClient, Uri uri)
-        {
-            Console.WriteLine("4. Download Blob from {0}", uri.ToString());
-            //Demonstrate how to download a blob from a Uri to the file system 
-
-            ICloudBlob blob = blobClient.GetBlobReferenceFromServer(uri);
-            var downloadToPath = string.Format("./CopyOf{0}", blob.Name);
-            using (var fs = File.OpenWrite(downloadToPath))
-            {
-                blob.DownloadToStream(fs);
-                Console.WriteLine("Blob downloaded to local file system location: {0}\n", downloadToPath);
-            }
-
-        }
-
-        /// <summary>
-        /// Clean up by deleting the blob from the container 
-        /// </summary>
-        private static void DeleteBlob(CloudBlobClient blobClient, Uri uri)
-        {
-            Console.WriteLine("5. Delete Blob");
-
-            ICloudBlob blob = blobClient.GetBlobReferenceFromServer(uri);
-            var success = blob.DeleteIfExists();
-
-            Console.WriteLine("{0} deletion of blob {1}\n", success ? "Successful" : "Unsuccessful", uri.ToString());
+            // Clean up after the demo 
+            Console.WriteLine("5. Delete page Blob and container");
+            await pageBlob.DeleteAsync();
+            await container.DeleteAsync();
         }
     }
 }
-
