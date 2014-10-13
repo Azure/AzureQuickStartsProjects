@@ -161,7 +161,7 @@ namespace DataTableStorageSample
             await BatchInsertOfCustomerEntitiesAsync(table); 
 
             // Query a range of data within a partition
-            Console.WriteLine("5. Retrieving entities with surname of Smith and first names >= 1 and <= 10");
+            Console.WriteLine("5. Retrieving entities with surname of Smith and first names >= 1 and <= 75");
             await PartitionRangeQueryAsync(table, "Smith", "0001", "0075");
 
             // Query for all the data within a partition 
