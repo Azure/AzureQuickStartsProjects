@@ -101,12 +101,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\Common\CertificateAuthenticationHelper.cs">
-      <Link>CertificateAuthenticationHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Shared\Common\PublishSettingsSubscriptionItem.cs">
-      <Link>PublishSettingsSubscriptionItem.cs</Link>
-    </Compile>
+    <Compile Include="CertificateAuthenticationHelper.cs" />
+    <Compile Include="PublishSettingsSubscriptionItem.cs" />
     <Compile Include="VMManagementController.cs" />
     <Compile Include="VMManagementControllerParameters.cs" />
     <Compile Include="Program.cs" />

@@ -75,13 +75,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\Common\CertificateAuthenticationHelper.cs">
-      <Link>CertificateAuthenticationHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Shared\Common\PublishSettingsSubscriptionItem.cs">
-      <Link>PublishSettingsSubscriptionItem.cs</Link>
-    </Compile>
+    <Compile Include="CertificateAuthenticationHelper.cs" />
     <Compile Include="CredentialsHelper.cs" />
+    <Compile Include="PublishSettingsSubscriptionItem.cs" />
     <Compile Include="SqlManagementController.cs" />
     <Compile Include="SqlManagementControllerParameters.cs" />
     <Compile Include="Program.cs" />
