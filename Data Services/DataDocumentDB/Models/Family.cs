@@ -7,7 +7,7 @@ using Microsoft.Azure.Documents;
 
 namespace DataDocumentDB.Models
 {
-    class Family : Document
+    class Family : Resource
     {
         public string FamilyName { get; set; }
         public Parent[] Parents { get; set; }

@@ -236,7 +236,7 @@ namespace DataDocumentDB
             // 1. LINQ Query
             var query = from f in client.CreateDocumentQuery<Family>(collectionLink)
                         where f.Id == "AndersonFamily"
-                           select f;
+                        select f;
 
             Console.WriteLine(query.AsEnumerable().FirstOrDefault<Family>().FamilyName);
 
