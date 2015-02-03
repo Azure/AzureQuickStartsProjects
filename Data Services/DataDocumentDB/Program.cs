@@ -31,6 +31,16 @@ namespace DataDocumentDB
     class Program
     {
         //**************************************************************************************************************************************
+        // This sample demonstrates using Azure DocumentDB. In particular it demonstrates the following key concepts;
+        // 1. How to connect to a DocumentDB Account
+        // 2. How to query for a Database by its Id, and create one if not found
+        // 3. How to query for a DocumentCollection by its Id, and create one if not found
+        // 4. How to create a Document
+        // 5. How to query for Documents
+        // 6. How to delete a Database and a DocumentCollection
+        // 
+        // PRE-REQUISTES:
+        // **************
         // In order to run this sample for Azure DocumentDB you need to have the following pre-requistes;
         //           1) An Azure subscription
         //              If you don't have an Azure subscription you can get a free trial. To create a free trial see:
@@ -40,74 +50,90 @@ namespace DataDocumentDB
         //              For instructions on creating an Azure DocumentDB account see: 
         //              http://azure.microsoft.com/en-us/documentation/articles/documentdb-create-account/
         //
-        // NOTE: Never store credentials in source code. In this example placeholders in App.config are used. 
+        // NOTE:
+        // *****
+        // Never store credentials in source code. In this example placeholders in App.config are used. 
         //       For information on how to store credentials, see:
         //       Azure Websites: How Application Strings and Connection Strings Work 
         //       http://azure.microsoft.com/blog/2013/07/17/windows-azure-web-sites-how-application-strings-and-connection-strings-work/
         //
-        // Additional Azure DocumentDB Code Samples can be found on http://go.microsoft.com/fwlink/?LinkID=512740
+        // ADDITIONAL RESOURCES:
+        // *********************
+        // Service Documentation - http://aka.ms/documentdbdocs
+        // Additional Samples - http://aka.ms/documentdbsamples      
         //**************************************************************************************************************************************
 
-        static readonly string endpoint = ConfigurationManager.AppSettings["endpoint"];
-        static readonly string authKey = ConfigurationManager.AppSettings["authKey"];
         static DocumentClient client;
 
         static void Main(string[] args)
         {
-            try
-            {
+            string serviceEndpoint = ConfigurationManager.AppSettings["serviceEndpoint"];
+            string authKey = ConfigurationManager.AppSettings["authKey"];
 
-                // 1. Get a reference to your Azure DocumentDB.
-                //    It is recommended to create an instance of DocumentClient and reuse the same instance
-                //    as opposed to creating, using and destroying the instance time and time again
-                //    For this sample we are using the Defaults. There are optional parameters for things like ConnectionPolicy
-                //    that allows you to change from Gateway to Direct or from HTTPS to TCP. 
-                //    For more information on this, please consult the Azure DocumentDB Documentation
-                Console.WriteLine("1. Create an instance of DocumentClient");
-                using (client = new DocumentClient(new Uri(endpoint), authKey))
+            if (string.IsNullOrWhiteSpace(serviceEndpoint) || string.IsNullOrWhiteSpace(authKey) ||
+                String.Equals(serviceEndpoint, "TODO - [YOUR ENDPOINT]", StringComparison.OrdinalIgnoreCase) ||
+                String.Equals(authKey, "TODO - [YOUR AUTHKEY]", StringComparison.OrdinalIgnoreCase)){
+                
+                Console.WriteLine("Please update your DocumentDB Account credentials in App.config");
+                Console.ReadKey();
+            }
+            
+            else
+            {
+                try
                 {
-                    // 2. The first thing you need is a Database. 
-                    Console.WriteLine("2. Getting reference to Database");
-                    Database database = ReadOrCreateDatabase("QuickStarts");
+                    // 1. It is recommended to create an instance of DocumentClient and reuse the same instance
+                    //    as opposed to creating, using and destroying the instance time and time again
 
-                    // 3. The next thing you need is a DocumentCollection.
-                    Console.WriteLine("3. Getting reference to a DocumentCollection");
-                    DocumentCollection collection = ReadOrCreateCollection(database.SelfLink, "Documents");
+                    //    For this sample we are using the Defaults. There are optional parameters for things like ConnectionPolicy
+                    //    that allow you to change from Gateway to Direct or from HTTPS to TCP. 
+                    //    For more information on this, please consult the Service Documentation page in Additional Resources
+                    Console.WriteLine("1. Create an instance of DocumentClient");
+                    using (client = new DocumentClient(new Uri(serviceEndpoint), authKey))
+                    {
+                        // 2.
+                        Console.WriteLine("2. Getting reference to Database");
+                        Database database = ReadOrCreateDatabase("QuickStarts");
 
-                    // 4. Now let's add a few Documents
-                    Console.WriteLine("4. Inserting Documents");
-                    CreateDocuments(collection.SelfLink);
+                        // 3.
+                        Console.WriteLine("3. Getting reference to a DocumentCollection");
+                        DocumentCollection collection = ReadOrCreateCollection(database.SelfLink, "Documents");
 
-                    // 5. Now let's query for some Documents
-                    Console.WriteLine("5. Querying for Documents");
-                    QueryDocuments(collection.SelfLink);
-                    
-                    // 6. Finally cleanup by deleting the Database
-                    Console.WriteLine("6. Cleaning Up");
-                    Cleanup(database.SelfLink);
+                        // 4. 
+                        Console.WriteLine("4. Inserting Documents");
+                        CreateDocuments(collection.SelfLink);
+
+                        // 5.
+                        Console.WriteLine("5. Querying for Documents");
+                        QueryDocuments(collection.SelfLink);
+
+                        // 6. Finally cleanup by deleting the Database
+                        Console.WriteLine("6. Cleaning Up");
+                        Cleanup(database.SelfLink);
+                    }
                 }
-            }
-            catch (DocumentClientException docEx)
-            {
-                Exception baseException = docEx.GetBaseException();
-                Console.WriteLine("{0} StatusCode error occurred with activity id {3}: {1}, Message: {2}", 
-                    docEx.StatusCode, docEx.Message, baseException.Message, docEx.ActivityId);
-            }
-            catch (AggregateException aggEx)
-            {
-                Console.WriteLine("One or more errors occured during execution");
-                foreach (var exception in aggEx.InnerExceptions)
-                {                    
-                    Console.WriteLine("An exception of type {0} occured: {1}", exception.GetType(), exception.Message);
+                catch (DocumentClientException docEx)
+                {
+                    Exception baseException = docEx.GetBaseException();
+                    Console.WriteLine("{0} StatusCode error occurred with activity id {3}: {1}, Message: {2}",
+                        docEx.StatusCode, docEx.Message, baseException.Message, docEx.ActivityId);
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An unexpected exception of type {0} occured: {0}", ex.GetType(), ex.Message);
-            }
+                catch (AggregateException aggEx)
+                {
+                    Console.WriteLine("One or more errors occured during execution");
+                    foreach (var exception in aggEx.InnerExceptions)
+                    {
+                        Console.WriteLine("An exception of type {0} occured: {1}", exception.GetType(), exception.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An unexpected exception of type {0} occured: {0}", ex.GetType(), ex.Message);
+                }
 
-            Console.WriteLine("\nSample complete. Press any key to exit.");
-            Console.ReadKey();
+                Console.WriteLine("\nSample complete. Press any key to exit.");
+                Console.ReadKey();
+            }
         }
  
         private static Database ReadOrCreateDatabase(string databaseId)
@@ -162,14 +188,13 @@ namespace DataDocumentDB
             // 3. You can use dynamic types
             // 4. You can even work with Streams directly.
             //
-            // This sample method demonstrates only the first example
-            // For more examples of other ways to work with documents please consult the samples on MSDN. 
-
-            // Work with a well defined type that extends Document
             // In DocumetnDB every Document must have an "id" property. If you supply one, it must be unique. 
-            // If you do not supply one, DocumentDB will generate a unique value for you and add it to the Document. 
+            // If you do not supply one, DocumentDB will generate a GUID for you and add it to the Document as "id". 
             var task1 = client.CreateDocumentAsync(collectionLink, new Family
             {
+                //even though the property is Id, when serialized to JSON it will be transformed to id (lowercase)
+                //if you want this behavior for other properties, then use the [JsonProperty] attribute to decorate your POCO properties
+                //and control the serialization behavior
                 Id = "AndersonFamily",
                 FamilyName = "Anderson",
                 Parents = new Parent[]
@@ -189,7 +214,7 @@ namespace DataDocumentDB
 
             var task2 = client.CreateDocumentAsync(collectionLink, new Family
             {
-                Id = "WakefieldFamily",
+                //notice, we are not setting Id here. It will be generated for us before the JSON gets sent over the wire
                 FamilyName = "Wakefield",
                 Parents = new Parent[]
                 {
@@ -208,17 +233,17 @@ namespace DataDocumentDB
                 }
             });
 
-            var task3 = client.CreateDocumentAsync(collectionLink, new Family
+            //here we are just generating a dynamic object, no POCO needed
+            var task3 = client.CreateDocumentAsync(collectionLink, new 
             {
-                Id = "AdamsFamily",
                 FamilyName = "Adams",
-                Parents = new Parent[]
+                Parents = new
                 {
-                    new Parent{FirstName="Susan"}, 
+                    Parent = new {FirstName="Susan"}, 
                 },
-                Children = new Child[] 
+                Children = new
                 {
-                    new Child{FirstName="Megan", Gender="female"},
+                    Child = new {FirstName="Megan", Gender="female"},
                 },
             });
 
@@ -233,24 +258,28 @@ namespace DataDocumentDB
             // The .NET SDK for DocumentDB supports 3 different methods of Querying for Documents
             // LINQ queries, lamba and SQL
                         
-            // 1. LINQ Query
+            // 1. LINQ Query by document Id
             var query = from f in client.CreateDocumentQuery<Family>(collectionLink)
                         where f.Id == "AndersonFamily"
                         select f;
 
-            Console.WriteLine(query.AsEnumerable().FirstOrDefault<Family>().FamilyName);
+            Console.WriteLine("5. Family Name is - {0}", query.AsEnumerable().FirstOrDefault<Family>().FamilyName);
 
-            //2. LINQ Lambda
-            query = client.CreateDocumentQuery<Family>(collectionLink).Where(f => f.Id == "WakefieldFamily");
+            //2. LINQ Lambda with FamilyName attribute
+            query = client.CreateDocumentQuery<Family>(collectionLink).Where(f => f.FamilyName == "Wakefield");
 
-            Console.WriteLine(query.AsEnumerable().FirstOrDefault<Family>().FamilyName);
+            Console.WriteLine("5. Family Name is - {0}", query.AsEnumerable().FirstOrDefault<Family>().FamilyName);
 
-            //3. SQL
-            query = client.CreateDocumentQuery<Family>(collectionLink, "SELECT * " +
-                                                                       "FROM Families f " +
-                                                                       "WHERE f.id='AdamsFamily'");
+            //3. SQL query by the first Parent's FirstName
+            query = client.CreateDocumentQuery<Family>(collectionLink, new SqlQuerySpec
+            {
+                QueryText = "SELECT * FROM Families f JOIN p IN f.Parents WHERE (f.id = @id)",
+                Parameters = new SqlParameterCollection()  { 
+                          new SqlParameter("@id", "Adams") 
+                     }
+            });
 
-            Console.WriteLine(query.AsEnumerable().FirstOrDefault<Family>().FamilyName);
+            Console.WriteLine("5. Family Name is - {0}", query.AsEnumerable().FirstOrDefault<Family>().FamilyName);
         }
 
         private static void Cleanup(string databaseId)
