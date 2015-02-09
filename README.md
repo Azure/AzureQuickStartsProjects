@@ -100,7 +100,7 @@ This provides a general reference as to where a sample should be placed. If in d
 
 > **I need to create a Multi-Project Template!**
 >
-> Contact [Sayed Hashimi](https://twitter.com/sayedihashimi) for more information[.](https://microsoft.sharepoint.com/teams/aspnet/webprojd14/Shared%20Documents/Planning/templates/MultiProject%20Template.docx?web=1)
+> See  [How to create a multi-project temlate](https://github.com/ligershark/side-waffle/wiki/How-to-create-a-multi-project-template). If you get stuck you can contact [Sayed Ibrahim Hashimi](https://twitter.com/sayedihashimi).
 
 ### I can't prepare a simple sample
 
