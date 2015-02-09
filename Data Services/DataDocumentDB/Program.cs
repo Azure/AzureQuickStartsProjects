@@ -115,20 +115,20 @@ namespace DataDocumentDB
                 catch (DocumentClientException docEx)
                 {
                     Exception baseException = docEx.GetBaseException();
-                    Console.WriteLine("{0} StatusCode error occurred with activity id {3}: {1}, Message: {2}",
-                        docEx.StatusCode, docEx.Message, baseException.Message, docEx.ActivityId);
+                    Console.WriteLine("{0} StatusCode error occurred with activity id: {1}, Message: {2}",
+                        docEx.StatusCode, docEx.ActivityId, docEx.Message, baseException.Message);
                 }
                 catch (AggregateException aggEx)
                 {
-                    Console.WriteLine("One or more errors occured during execution");
+                    Console.WriteLine("One or more errors occurred during execution");
                     foreach (var exception in aggEx.InnerExceptions)
                     {
-                        Console.WriteLine("An exception of type {0} occured: {1}", exception.GetType(), exception.Message);
+                        Console.WriteLine("An exception of type {0} occurred: {1}", exception.GetType(), exception.Message);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("An unexpected exception of type {0} occured: {0}", ex.GetType(), ex.Message);
+                    Console.WriteLine("An unexpected exception of type {0} occurred: {1}", ex.GetType(), ex.Message);
                 }
 
                 Console.WriteLine("\nSample complete. Press any key to exit.");
@@ -237,13 +237,13 @@ namespace DataDocumentDB
             var task3 = client.CreateDocumentAsync(collectionLink, new 
             {
                 FamilyName = "Adams",
-                Parents = new
+                Parents = new []
                 {
-                    Parent = new {FirstName="Susan"}, 
+                    new {FirstName="Susan"}, 
                 },
-                Children = new
+                Children = new []
                 {
-                    Child = new {FirstName="Megan", Gender="female"},
+                    new {FirstName="Megan", Gender="female"},
                 },
             });
 
@@ -270,12 +270,13 @@ namespace DataDocumentDB
 
             Console.WriteLine("5. Family Name is - {0}", query.AsEnumerable().FirstOrDefault<Family>().FamilyName);
 
-            //3. SQL query by the first Parent's FirstName
+            //3. SQL query for a family record by a Parent's FirstName
+            //   For assistance with the SQL query grammar, refer to http://www.documentdb.com/sql/demo
             query = client.CreateDocumentQuery<Family>(collectionLink, new SqlQuerySpec
             {
-                QueryText = "SELECT * FROM Families f JOIN p IN f.Parents WHERE (f.id = @id)",
+                QueryText = "SELECT VALUE f FROM Families f JOIN p IN f.Parents WHERE (p.FirstName = @name)",
                 Parameters = new SqlParameterCollection()  { 
-                          new SqlParameter("@id", "Adams") 
+                          new SqlParameter("@name", "Susan")
                      }
             });
 
