@@ -20,6 +20,7 @@ namespace DeployManageCloudServices
     {
         internal string Region { get; set; }
         internal string StorageAccountName { get; set; }
+        internal string StorageAccountType { get; set; }
         internal string CloudServiceName { get; set; }
         internal string ServicePackageFilePath { get; set; }
         internal string ServiceConfigurationFilePath { get; set; }

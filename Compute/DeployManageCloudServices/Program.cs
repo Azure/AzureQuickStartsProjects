@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Management.Storage.Models;
 
 namespace DeployManageCloudServices
 {
@@ -29,32 +30,70 @@ namespace DeployManageCloudServices
             // The Microsoft Azure Management Libraries are inteded for developers who want to automate 
             // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
             // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
-            // Web Sites and core data center infrastructure management. If you dont have a Microsoft Azure 
-            // subscription you can get a FREE trial account here:
+            // Web Sites and core data center infrastructure management. For more information on the Management
+            // Libraries for .NET, see https://msdn.microsoft.com/en-us/library/azure/dn722415.aspx. 
+            //
+            // If you dont have a Microsoft Azure subscription you can get a FREE trial account here:
             // http://go.microsoft.com/fwlink/?LinkId=330212
             //
+
+            // This sample demonstates the following scenarios:
+            //  1. Creating an Azure Storage Account
+            //  2. Uploading an Azure Cloud Service package to Storage
+            //  3. Creating an Azure Cloud Service
+            //  4. Deploying the package to the Azure Cloud Service production slot
+            //  5. Deleting a Cloud Service Deployment, Cloud Service and Storage Account.
+            //
+
             // TODO: Perform the following steps before running the sample 
             //  1. Download your *.publishsettings file from the Microsoft Azure management portal and save to
             //      to your local dive http://go.microsoft.com/fwlink/?LinkID=276844
-            //  2. Set the PublishSettingsFilePath, ServiceConfigurationFilePath and ServicePackageFilePath
-            //      properties below.  Do not enable Remote Desktop, as this process won't upload your certificate. 
-            //  3. Run
+            //  2. Open a new instance of Visual Studio, create an Azure Cloud Service project with at least
+            //      one role (don't worry about writing any custom code), right-click the project and choose
+            //      Package to create the .cspkg and .cscfg files which will be deployed to Azure by this sample.
+            //  3. Set the PublishSettingsFilePath, ServiceConfigurationFilePath and ServicePackageFilePath
+            //      properties below.  
+            //  4. Run
             //***********************************************************************************************
 
             var serviceParameters = new ManagementControllerParameters
                 {
                     PublishSettingsFilePath = @"C:\Your.publishsettings",
                     ServicePackageFilePath = @"C:\YourPackageFile.cspkg",
-                    ServiceConfigurationFilePath = @"YourServiceConfiguration.Cloud.cscfg",
+                    ServiceConfigurationFilePath = @"C:\YourServiceConfiguration.Cloud.cscfg",
                     CloudServiceName = string.Format("MgmtLibDemo{0}", DateTime.Now.Ticks),
                     Region = "West US",
-                    StorageAccountName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                    StorageAccountName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()),
+                    StorageAccountType = StorageAccountTypes.StandardGRS
                 };
+
+            if (!VerifyConfiguration(serviceParameters))
+            {
+                Console.ReadLine();
+                return;
+            }
 
             Task.WaitAll(SetupAndTearDownCloudService(serviceParameters));
 
             Console.WriteLine("Done");
             Console.ReadLine();
+        }
+
+        private static bool VerifyConfiguration(ManagementControllerParameters serviceParameters)
+        {
+            bool configOK = true;
+            if (!File.Exists(serviceParameters.PublishSettingsFilePath))
+            {
+                configOK = false;
+                Console.WriteLine("Please download your .publishsettings file and specify the location in the Main method.");
+            }
+            if (!File.Exists(serviceParameters.ServicePackageFilePath) || !File.Exists(serviceParameters.ServiceConfigurationFilePath))
+            {
+                configOK = false;
+                Console.WriteLine("Please create an Azure Cloud Service project in another instance of Visual Studio, Package it, and specify the locations of the .cspkg and .cscfg files in the Main method.");
+            }
+            return configOK;
+            
         }
 
         private static async Task SetupAndTearDownCloudService(ManagementControllerParameters managementControllerParameters)
@@ -95,7 +134,7 @@ namespace DeployManageCloudServices
         {
             Console.WriteLine("\t > Press Enter to {0}", prompt);
             Console.ReadKey();
-            Console.WriteLine("\t\t Starting, view progress in the managent portal....");
+            Console.WriteLine("\t\t Starting, view progress in the management portal....");
         }
     }
 }

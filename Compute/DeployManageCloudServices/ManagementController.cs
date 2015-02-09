@@ -88,7 +88,8 @@ namespace DeployManageCloudServices
                 new StorageAccountCreateParameters
                 {
                     Location = _parameters.Region,
-                    Name = _parameters.StorageAccountName
+                    Name = _parameters.StorageAccountName,
+                    AccountType = _parameters.StorageAccountType,
                 });
         }
 
