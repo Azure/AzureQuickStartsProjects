@@ -25,27 +25,28 @@ namespace DeployManageAzureStorage
 {
     class Program
     {
+        //***********************************************************************************************
+        // The Microsoft Azure Management Libraries are intended for developers who want to automate 
+        // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
+        // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
+        // Web Sites and core data center infrastructure management. For more information on the Management
+        // Libraries for .NET, see https://msdn.microsoft.com/en-us/library/azure/dn722415.aspx. 
+        //
+        // If you dont have a Microsoft Azure subscription you can get a FREE trial account here:
+        // http://go.microsoft.com/fwlink/?LinkId=330212
+        //
+        // This Quickstart demonstrates using WAML how to create, delete, and configure storage service 
+        // accounts and credentials.
+        //
+        // TODO: Perform the following steps before running the sample 
+        //  1. Download your *.publishsettings file from the Microsoft Azure management portal and save to
+        //     to your local drive http://go.microsoft.com/fwlink/?LinkID=276844
+        //  2. Set the PublishSettingsFilePath property below.  
+        //  3. Run
+        //***********************************************************************************************
+
         static void Main(string[] args)
         {
-            //***********************************************************************************************
-            // The Microsoft Azure Management Libraries (WAML) are intended for developers who want to automate 
-            // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
-            // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
-            // Web Sites and core data center infrastructure management. If you dont have a Microsoft Azure 
-            // subscription you can get a FREE trial account here:
-            // http://go.microsoft.com/fwlink/?LinkId=330212
-            //
-            // This Quickstart demonstrates using WAML how to create, delete, and configure storage service 
-            // accounts and credentials.
-            //
-            // TODO: Perform the following steps before running the sample:
-            //
-            // Download your Microsoft Azure PublishSettings file; to do so click here:
-            // http://go.microsoft.com/fwlink/?LinkID=276844 
-            //
-            // Fill in the path + file name of the PublishSettings file below in PublishSettingsFilePath.
-            //***********************************************************************************************
-
             var serviceParameters = new ManagementControllerParameters
             {
                 PublishSettingsFilePath = @"C:\Your.publishsettings",
@@ -54,14 +55,20 @@ namespace DeployManageAzureStorage
                 StorageAccountType = StorageAccountTypes.StandardGRS
             };
 
+            if (!VerifyConfiguration(serviceParameters))
+            {
+                Console.ReadLine();
+                return;
+            }
+
             int step = 1;
 
             CheckNameAvailability(serviceParameters, step++);
 
             // use one or the other of these two variations on SetupStorageAccount
-            //SetupStorageAccount(serviceParameters, step++);
+            //SetupStorageAccount(serviceParameters, step++); // Sync version
 
-            Task.WaitAll(SetupStorageAccountAsync(serviceParameters, step++));
+            Task.WaitAll(SetupStorageAccountAsync(serviceParameters, step++));  // Async version
             // *******************************************************************
 
             UpdateStorageAccount(serviceParameters, step++);
@@ -82,6 +89,16 @@ namespace DeployManageAzureStorage
             Console.ReadLine();
         }
 
+        private static bool VerifyConfiguration(ManagementControllerParameters serviceParameters)
+        {
+            bool configOK = true;
+            if (!File.Exists(serviceParameters.PublishSettingsFilePath))
+            {
+                configOK = false;
+                Console.WriteLine("Please download your .publishsettings file and specify the location in the Main method.");
+            }
+            return configOK;
+        }
         private static void CheckNameAvailability(ManagementControllerParameters managementControllerParameters, int step)
         {
             using (var controller = new ManagementController(managementControllerParameters))

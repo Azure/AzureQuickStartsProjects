@@ -101,7 +101,8 @@ namespace DeployManageAzureStorage
                 new StorageAccountCreateParameters
                 {
                     Location = _parameters.Region,
-                    Name = _parameters.StorageAccountName
+                    Name = _parameters.StorageAccountName,
+                    AccountType = _parameters.StorageAccountType
                 });
         }
 
