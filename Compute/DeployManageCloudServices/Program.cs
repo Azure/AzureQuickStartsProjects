@@ -24,37 +24,39 @@ namespace DeployManageCloudServices
 {
     class Program
     {
+
+        //***********************************************************************************************
+        // The Microsoft Azure Management Libraries are intended for developers who want to automate 
+        // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
+        // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
+        // Web Sites and core data center infrastructure management. For more information on the Management
+        // Libraries for .NET, see https://msdn.microsoft.com/en-us/library/azure/dn722415.aspx. 
+        //
+        // If you dont have a Microsoft Azure subscription you can get a FREE trial account here:
+        // http://go.microsoft.com/fwlink/?LinkId=330212
+        //
+
+        // This sample demonstates the following scenarios:
+        //  1. Creating an Azure Storage Account
+        //  2. Uploading an Azure Cloud Service package to Storage
+        //  3. Creating an Azure Cloud Service
+        //  4. Deploying the package to the Azure Cloud Service production slot
+        //  5. Deleting a Cloud Service Deployment, Cloud Service and Storage Account.
+        //
+
+        // TODO: Perform the following steps before running the sample 
+        //  1. Download your *.publishsettings file from the Microsoft Azure management portal and save to
+        //      to your local dive http://go.microsoft.com/fwlink/?LinkID=276844
+        //  2. Open a new instance of Visual Studio, create an Azure Cloud Service project with at least
+        //      one role (don't worry about writing any custom code), right-click the project and choose
+        //      Package to create the .cspkg and .cscfg files which will be deployed to Azure by this sample.
+        //  3. Set the PublishSettingsFilePath, ServiceConfigurationFilePath and ServicePackageFilePath
+        //      properties below.  
+        //  4. Run
+        //***********************************************************************************************
+
         static void Main(string[] args)
         {
-            //***********************************************************************************************
-            // The Microsoft Azure Management Libraries are inteded for developers who want to automate 
-            // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
-            // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
-            // Web Sites and core data center infrastructure management. For more information on the Management
-            // Libraries for .NET, see https://msdn.microsoft.com/en-us/library/azure/dn722415.aspx. 
-            //
-            // If you dont have a Microsoft Azure subscription you can get a FREE trial account here:
-            // http://go.microsoft.com/fwlink/?LinkId=330212
-            //
-
-            // This sample demonstates the following scenarios:
-            //  1. Creating an Azure Storage Account
-            //  2. Uploading an Azure Cloud Service package to Storage
-            //  3. Creating an Azure Cloud Service
-            //  4. Deploying the package to the Azure Cloud Service production slot
-            //  5. Deleting a Cloud Service Deployment, Cloud Service and Storage Account.
-            //
-
-            // TODO: Perform the following steps before running the sample 
-            //  1. Download your *.publishsettings file from the Microsoft Azure management portal and save to
-            //      to your local dive http://go.microsoft.com/fwlink/?LinkID=276844
-            //  2. Open a new instance of Visual Studio, create an Azure Cloud Service project with at least
-            //      one role (don't worry about writing any custom code), right-click the project and choose
-            //      Package to create the .cspkg and .cscfg files which will be deployed to Azure by this sample.
-            //  3. Set the PublishSettingsFilePath, ServiceConfigurationFilePath and ServicePackageFilePath
-            //      properties below.  
-            //  4. Run
-            //***********************************************************************************************
 
             var serviceParameters = new ManagementControllerParameters
                 {
