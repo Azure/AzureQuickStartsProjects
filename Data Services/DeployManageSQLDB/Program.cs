@@ -17,6 +17,7 @@
 
 using Microsoft.WindowsAzure.Management.Sql.Models;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -26,60 +27,82 @@ namespace DeployManageSQLDB
 {
     class Program
     {
+        //*************************************************************************************************************
+        // The Microsoft Azure Management Libraries are intended for developers who want to automate 
+        // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
+        // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
+        // Web Sites and core data center infrastructure management. For more information on the Management
+        // Libraries for .NET, see https://msdn.microsoft.com/en-us/library/azure/dn722415.aspx. 
+        //
+        // If you dont have a Microsoft Azure subscription you can get a FREE trial account here:
+        // http://go.microsoft.com/fwlink/?LinkId=330212
+        //
+        // This Quickstart demonstrates using WAML how to provision a new Microsoft Azure SQL DB Server,
+        // Configure the Firewall Rules, Create a new Database, Then drop the Database and Delete the Server.
+        //
+        // TODO: Perform the following steps before running the sample:
+        //
+        // 1. Download your Microsoft Azure PublishSettings file; to do so click here:
+        //    http://go.microsoft.com/fwlink/?LinkID=276844 
+        //
+        // 2. Fill in the full path of the PublishSettings file below in PublishSettingsFilePath.
+        //
+        // 3. Choose an [ADMIN USER] and [ADMIN PASSWORD] that you wish to use for the server.
+        //
+        // 4. Update the FirewallRuleStartIP and FirewallRuleEndIP values.
+        //    If you wish to add a firewall rule to allow your local development computer access
+        //    to the Server / Database then configure FirewallRuleStartIP and FirewallRuleEndIP to the public IP of 
+        //    your local development machine.
+        //
+        // 6. Adjust values of any other parameter as you wish
+        //*************************************************************************************************************
+
         private static string _serverName;
 
         static void Main(string[] args)
         {
-            //*************************************************************************************************************
-            // The Microsoft Azure Management Libraries (WAML) are intended for developers who want to automate 
-            // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
-            // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
-            // Web Sites and core data center infrastructure management. If you dont have a Microsoft Azure 
-            // subscription you can get a FREE trial account here:
-            // http://go.microsoft.com/fwlink/?LinkId=330212
-            //
-            // This Quickstart demonstrates using WAML how to provision a new Microsoft Azure SQL DB Server,
-            // Configure the Firewall Rules, Create a new Database, Then drop the Database and Delete the Server.
-            //
-            // TODO: Perform the following steps before running the sample:
-            //
-            // 1. Download your Microsoft Azure PublishSettings file; to do so click here:
-            //    http://go.microsoft.com/fwlink/?LinkID=276844 
-            //
-            // 2. Fill in the [PATH] + [FILENAME] of the PublishSettings file below in PublishSettingsFilePath.
-            // 
-            // 3. Fill in the [ACCOUNT NAME], [CONTAINER NAME], [FILE NAME] in order to Export a Database to blob storage.
-            //
-            // 4. Choose an [ADMIN USER] and [ADMIN PASSWORD] that you wish to use for the server.
-            //
-            // 5. Fill in [FIREWALL RULE START] & [FIREWALL RULE END]
-            //    If you wish to add a firewall rule to allow your local development computer access
-            //    to the Server / Database then configure FirewallRuleStartIP and FirewallRuleEndIP to the public IP of 
-            //    your local development machine.
-            //
-            // 6. Adjust values of any other parameter as you wish
-            //*************************************************************************************************************
-
             var parameters = new SqlManagementControllerParameters
             {
-                PublishSettingsFilePath = @"C:\Your.publishsettings",
+                PublishSettingsFilePath = @"C:\Your.publishsettings", // UPDATE
                 ServerRegion = "West US",
-                ServerAdminUsername = "[ADMIN USER]",
-                ServerAdminPassword = "[ADM1N PASSW0RD]",
+                ServerAdminUsername = "[ADMIN USER]", // UPDATE
+                ServerAdminPassword = "[ADMIN PASSWORD]", // UPDATE
                 FirewallRuleAllowAzureServices = true,
-                FirewallRuleName = "Local IP",
+                FirewallRuleName = "Sample Firewall Rule",
                 FirewallRuleStartIP = "0.0.0.0",
                 FirewallRuleEndIP = "255.255.255.254", // Example Firewall Rule only. Do Not Use in Production.
                 DatabaseName = "Demo",
-                DatabaseEdition = "Web",
+                DatabaseEdition = "Basic",
                 DatabaseMaxSizeInGB = 1,
                 DatabaseCollation = "SQL_Latin1_General_CP1_CI_AS"
             };
+
+            if (!VerifyConfiguration(parameters))
+            {
+                Console.ReadLine();
+                return;
+            }
 
             Task.WaitAll(SetupAndTearDownLogicalSQLServer(parameters));
 
             Console.WriteLine("Done");
             Console.ReadLine();
+        }
+
+        private static bool VerifyConfiguration(SqlManagementControllerParameters serviceParameters)
+        {
+            bool configOK = true;
+            if (!File.Exists(serviceParameters.PublishSettingsFilePath))
+            {
+                configOK = false;
+                Console.WriteLine("Please download your .publishsettings file and specify the location in the Main method.");
+            }
+            if (serviceParameters.ServerAdminUsername.StartsWith("[") || serviceParameters.ServerAdminPassword.StartsWith("["))
+            {
+                configOK = false;
+                Console.WriteLine("Please specify a server admin username and password in the Main method.");
+            }
+            return configOK;
         }
 
         private static async Task SetupAndTearDownLogicalSQLServer(SqlManagementControllerParameters parameters)
@@ -264,7 +287,7 @@ namespace DeployManageSQLDB
                 {
                     Console.WriteLine("\n{1}. Adding Firewall rules for Azure Services on server {0}", _serverName, step);
 
-                    Task p = Task.Run(() => controller.ConfigureFirewallAsync(_serverName, parameters.FirewallRuleName, parameters.FirewallRuleStartIP, parameters.FirewallRuleEndIP));
+                    Task p = Task.Run(() => controller.ConfigureFirewallAsync(_serverName, "Azure Services", parameters.FirewallRuleStartIP, parameters.FirewallRuleEndIP));
                     WaitForStatus(p);
                 }
 
