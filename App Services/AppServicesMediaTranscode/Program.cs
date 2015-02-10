@@ -22,6 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.WindowsAzure.MediaServices.Client;
+using System.Diagnostics;
 
 namespace AppServicesMediaTranscode
 {
@@ -33,6 +34,14 @@ namespace AppServicesMediaTranscode
         // and other devices and platforms. If you dont have a Microsoft Azure subscription you can 
         // get a FREE trial account here: http://go.microsoft.com/fwlink/?LinkId=330212
         //
+        // This QuickStart demonstrates the following scenarios:
+        //  1. Connecting to an Azure Media Services account
+        //  2. Uploading an MP4 video asset
+        //  3. Creating and executing a Smooth Streaming encoding job
+        //  4. Creating a locator URL to a streaming media asset on an origin server.
+        //
+        // For more information about Azure Media Services, see 
+        // http://azure.microsoft.com/en-us/develop/media-services/
         //
         //TODO: 1. Provision a Media Service using the Microsoft Azure Management Portal 
         //      http://go.microsoft.com/fwlink/?LinkId=324582 
@@ -41,7 +50,7 @@ namespace AppServicesMediaTranscode
         //      3. Update _singleInputMp4Path variable below to point at your *.mp4 input file
         //****************************************************************************************    
 
-        private static readonly string _singleInputMp4Path = @"C:\Your_File_Path_For_Uploads";
+        private static readonly string _singleInputMp4Path = @"C:\temp\myvideo.mp4";
         private static readonly string _mediaServicesAccountKey = ConfigurationManager.AppSettings["MediaServicesAccountKey"];
         private static readonly string _mediaServicesAccountName = ConfigurationManager.AppSettings["MediaServicesAccountName"];
 
@@ -51,6 +60,12 @@ namespace AppServicesMediaTranscode
 
         static void Main(string[] args)
         {
+            if (!VerifyConfiguration())
+            {
+                Console.ReadLine();
+                return;
+            }
+
             _context = new CloudMediaContext(_mediaServicesAccountName, _mediaServicesAccountKey);
 
             //Create an encrypted asset and upload the mp4. 
@@ -72,6 +87,30 @@ namespace AppServicesMediaTranscode
             Console.WriteLine("Please press enter to exit...");
             Console.ReadLine();
         }
+
+        private static bool VerifyConfiguration()
+        {
+            bool configOK = true;
+            if (String.IsNullOrWhiteSpace(_mediaServicesAccountName))
+            {
+                configOK = false;
+                Console.WriteLine("Please update the 'MediaServicesAccountName' appSetting in app.config to specify your Azure Media Services account name.");
+            }
+            if (String.IsNullOrWhiteSpace(_mediaServicesAccountKey))
+            {
+                configOK = false;
+                Console.WriteLine("Please update the 'MediaServicesAccountKey' appSetting in app.config to specify your Azure Media Services account key.");
+            }
+            if (!File.Exists(_singleInputMp4Path))
+            {
+                configOK = false;
+                Console.WriteLine("Please update the '_singleInputMp4Path' variable to point to a local video file that will be uploaded.");
+            }
+            return configOK;
+
+        }
+
+
         static public IAsset CreateAssetAndUploadSingleFile(AssetCreationOptions assetCreationOptions, string singleFilePath)
         {
             var assetName = "UploadSingleFile_" + DateTime.UtcNow.ToString();
@@ -214,8 +253,9 @@ namespace AppServicesMediaTranscode
             Console.WriteLine(urlForClientStreaming);
             Console.WriteLine();
 
-            Console.WriteLine("You could try the above stream URL in http://smf.cloudapp.net/healthmonitor");
+            Console.WriteLine("Launching web player for smooth streaming.");
             Console.WriteLine();
+            Process.Start("http://smf.cloudapp.net/healthmonitor?url=" + urlForClientStreaming);
 
             // Return the locator. 
             return originLocator;
