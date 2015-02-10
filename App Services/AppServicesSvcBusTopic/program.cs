@@ -21,37 +21,61 @@ namespace Microsoft.Samples.AppServicesSvcBusTopic
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
     using System.Threading;
+    using System.Configuration;
 
     public class Program
     {
+        //****************************************************************************************
+        //
+        // This sample demonstrates how to send to and receive messages from Azure Service Bus Topics 
+        // using the .NET SDK. 
+        //
+        // TODO: 
+        //   1. Open the Azure Management Portal (http://manage.windowsazure.com) to create a service 
+        //      bus namespace and retrieve the connection string details 
+        //      (see http://go.microsoft.com/fwlink/?LinkID=325251 for details)
+        //
+        //   2. Open app.config and update [your namespace] with your service bus namespace and
+        //      [your access key] with the access key for the corresponding namespace
+        //
+        //   3. Run the project
+        //****************************************************************************************
+
         private static TopicClient topicClient;
         private static string TopicName = "SampleTopic";
 
         static void Main(string[] args)
         {
-            //****************************************************************************************
-            // TODO: 
-            //   1. Please see http://go.microsoft.com/fwlink/?LinkID=325251 for Creating a service bus
-            //   namespace and retrieving the shared  secret
-            //   2. Open app.config and update [your namespace] with your service bus namespace and
-            //      [your secret] with the shared secret key value for the corresponding namespace
-            //   3. Run the project
-            //****************************************************************************************
-
-
+            if (!VerifyConfiguration())
+            {
+                Console.ReadLine();
+                return;
+            }
             Console.WriteLine("Creating Topic and Subscriptions");
             CreateTopic();
-            Console.WriteLine("Press anykey to start sending messages ...");
+            Console.WriteLine("Press any key to start sending messages ...");
             Console.ReadKey();
             SendMessages();
-            Console.WriteLine("Press anykey to start receiving messages that you just sent ...");
+            Console.WriteLine("Press any key to start receiving messages that you just sent ...");
             Console.ReadKey();
             ReceiveMessages();
-            Console.WriteLine("\nEnd of scenario, press anykey to exit.");
+            Console.WriteLine("\nEnd of scenario, press any key to exit.");
             Console.ReadKey();
 
         }
 
+        private static bool VerifyConfiguration()
+        {
+            bool configOK = true;
+            var connectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
+            if (connectionString.Contains("[your namespace]") || connectionString.Contains("[your access key]"))
+            {
+                configOK = false;
+                Console.WriteLine("Please update the 'Microsoft.ServiceBus.ConnectionString' appSetting in app.config to specify your Service Bus namespace and secret key.");
+            }
+            return configOK;
+
+        }
 
         private static void CreateTopic()
         {
