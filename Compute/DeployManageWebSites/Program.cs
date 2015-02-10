@@ -26,29 +26,40 @@ namespace DeployManageWebSites
 {
     class Program
     {
+        //***********************************************************************************************
+        // The Microsoft Azure Management Libraries are intended for developers who want to automate 
+        // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
+        // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
+        // Web Sites and core data center infrastructure management. For more information on the Management
+        // Libraries for .NET, see https://msdn.microsoft.com/en-us/library/azure/dn722415.aspx. 
+        //
+        // If you dont have a Microsoft Azure subscription you can get a FREE trial account here:
+        // http://go.microsoft.com/fwlink/?LinkId=330212
+        //
+        // This sample demonstates the following scenarios:
+        //  1. Creating a Website
+        //  2. Listing all Websites
+        //  3. Configuring a Website
+        //  4. Publishing a Website using Git
+        //  5. Launching a Website in a browser
+        //  6. Upgrading a Website
+        //  7. Deleting a Website
+        //
+        // TODO: Perform the following steps before running the sample 
+        //  1. Download your *.publishsettings file from the Microsoft Azure management portal and save to
+        //      to your local dive http://go.microsoft.com/fwlink/?LinkID=276844
+        //  2. Set the PublishSettingsFilePath
+        //  3. Install git (e.g. http://msysgit.github.io/) and add the directory to the PATH variable 
+        //  4. Run
+        //***********************************************************************************************
+
         static void Main(string[] args)
         {
-            //***********************************************************************************************
-            // The Microsoft Azure Management Libraries are inteded for developers who want to automate 
-            // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
-            // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
-            // Web Sites and core data center infrastructure management. If you dont have a Microsoft Azure 
-            // subscription you can get a FREE trial account here:
-            // http://go.microsoft.com/fwlink/?LinkId=330212
-            //
-            // TODO: Perform the following steps before running the sample 
-            //  1. Download your *.publishsettings file from the Microsoft Azure management portal and save to
-            //      to your local dive http://go.microsoft.com/fwlink/?LinkID=276844
-            //  2. Set the PublishSettingsFilePath
-            //  3. Install git (e.g. http://msysgit.github.io/) and add the directory to the PATH variable 
-            //  4. Run
-            //***********************************************************************************************
-
             var webSiteParameters = new ManagementControllerParameters
             {
                 PublishSettingsFilePath = @"C:\Your.publishsettings",
                 WebSiteName = string.Format("MgmtLibWebSiteDemo{0}", DateTime.Now.Ticks),
-                GeoRegion = GeoRegionNames.NorthEurope,
+                GeoRegion = GeoRegionNames.WestUS,
                 UpgradePlan = WebSitePlans.Free,
                 // WorkerSize and NumberOfWorkers are only used in Standard mode 
                 // Depending on your subscription type certain capacity restrictions may apply
@@ -56,6 +67,12 @@ namespace DeployManageWebSites
                 // WorkerSize = WorkerSizeOptions.Small,
                 // NumberOfWorkers = 1
             };
+
+            if (!VerifyConfiguration(webSiteParameters))
+            {
+                Console.ReadLine();
+                return;
+            }
 
             try
             {
@@ -73,6 +90,16 @@ namespace DeployManageWebSites
             Console.ReadLine();
         }
 
+        private static bool VerifyConfiguration(ManagementControllerParameters serviceParameters)
+        {
+            bool configOK = true;
+            if (!File.Exists(serviceParameters.PublishSettingsFilePath))
+            {
+                configOK = false;
+                Console.WriteLine("Please download your .publishsettings file and specify the location in the Main method.");
+            }
+            return configOK;
+        }
 
         private static async Task SetupAndTearDownWebsite(ManagementControllerParameters managementControllerParameters)
         {
@@ -129,7 +156,7 @@ namespace DeployManageWebSites
             Console.ReadKey();
             if (viewProgressInPortal)
             {
-                Console.WriteLine("\t\t Starting, view progress in the managent portal....");
+                Console.WriteLine("\t\t Starting, view progress in the management portal....");
             }
         }
 
