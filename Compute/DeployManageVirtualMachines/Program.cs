@@ -26,23 +26,35 @@ namespace DeployManageVirtualMachines
 {
     class Program
     {
+
+        //***********************************************************************************************
+        // The Microsoft Azure Management Libraries are intended for developers who want to automate 
+        // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
+        // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
+        // Web Sites and core data center infrastructure management. For more information on the Management
+        // Libraries for .NET, see https://msdn.microsoft.com/en-us/library/azure/dn722415.aspx. 
+        //
+        // If you dont have a Microsoft Azure subscription you can get a FREE trial account here:
+        // http://go.microsoft.com/fwlink/?LinkId=330212
+        //
+        // This sample demonstates the following scenarios:
+        //  1. Creating a Storage Account
+        //  2. Creating a Cloud Service
+        //  3. Creating a Virtual Machine
+        //  4. Shutting down and deallocating a Virtual Machine
+        //  5. Starting a Virtual Machine
+        //  6. Deleting a Virtual Machine
+        //  7. Deleting a Storage Account
+        //
+        // TODO: Perform the following steps before running the sample 
+        //  1. Download your *.publishsettings file from the Microsoft Azure management portal and save to
+        //     to your local drive http://go.microsoft.com/fwlink/?LinkID=276844
+        //  2. Set the PublishSettingsFilePath property below.  
+        //  3. Run
+        //***********************************************************************************************
+
         static void Main(string[] args)
         {
-            //***********************************************************************************************
-            // The Microsoft Azure Management Libraries are inteded for developers who want to automate 
-            // the management, provisioning, deprovisioning and test of cloud infrastructure with ease.            
-            // These services support Microsoft Azure Virtual Machines, Hosted Services, Storage, Virtual Networks, 
-            // Web Sites and core data center infrastructure management. If you dont have a Microsoft Azure 
-            // subscription you can get a FREE trial account here:
-            // http://go.microsoft.com/fwlink/?LinkId=330212
-            //
-            // TODO: Perform the following steps before running the sample 
-            //  1. Download your *.publishsettings file from the Microsoft Azure management portal and save to
-            //     to your local drive http://go.microsoft.com/fwlink/?LinkID=276844
-            //  2. Set the PublishSettingsFilePath property below.  
-            //  3. Run
-            //***********************************************************************************************
-
             var serviceParameters = new VMManagementControllerParameters
             {
                 PublishSettingsFilePath = @"C:\your.publishsettings",
@@ -53,6 +65,12 @@ namespace DeployManageVirtualMachines
                 StorageAccountName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()),
                 StorageAccountType = StorageAccountTypes.StandardGRS
             };
+
+            if (!VerifyConfiguration(serviceParameters))
+            {
+                Console.ReadLine();
+                return;
+            }
 
             // Request login/password
 
@@ -68,6 +86,17 @@ namespace DeployManageVirtualMachines
 
             Console.WriteLine("Done");
             Console.ReadLine();
+        }
+
+        private static bool VerifyConfiguration(VMManagementControllerParameters serviceParameters)
+        {
+            bool configOK = true;
+            if (!File.Exists(serviceParameters.PublishSettingsFilePath))
+            {
+                configOK = false;
+                Console.WriteLine("Please download your .publishsettings file and specify the location in the Main method.");
+            }
+            return configOK;
         }
 
         private static async Task SetupAndTearDownVirtualMachine(VMManagementControllerParameters managementControllerParameters)
