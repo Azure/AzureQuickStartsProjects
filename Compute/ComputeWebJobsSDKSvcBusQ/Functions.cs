@@ -56,6 +56,7 @@ namespace ComputeWebJobsSDKServiceBus
         }
 
         // Topic subscription listener #2
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static void SBTopicListener2(
             [ServiceBusTrigger(TopicName, QueueNamePrefix + "topic-2")] BrokeredMessage message,
             TextWriter log)

@@ -60,6 +60,17 @@ namespace ComputeWebJobsSDKServiceBus
 
         private static void CreateStartMessage()
         {
+            string WebJobsDashboard = ConfigurationManager.AppSettings["AzureWebJobsDashboard"];
+            string WebJobsStorage = ConfigurationManager.AppSettings["AzureWebJobsStorage"];
+
+            if (string.IsNullOrWhiteSpace(WebJobsDashboard) || string.IsNullOrWhiteSpace(WebJobsStorage) ||
+                String.Equals(WebJobsDashboard, "AzureWebJobsDashboard", StringComparison.OrdinalIgnoreCase) ||
+                String.Equals(WebJobsStorage, "AzureWebJobsDashboard", StringComparison.OrdinalIgnoreCase))
+            {
+
+                Console.WriteLine("Please add the Azure Storage account credentials in App.config");
+                Console.ReadKey();
+            }
             if (!_namespaceManager.QueueExists(Functions.StartQueueName))
             {
                 _namespaceManager.CreateQueue(Functions.StartQueueName);

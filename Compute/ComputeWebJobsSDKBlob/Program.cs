@@ -49,6 +49,18 @@ namespace ComputeWebJobsSDKBlobStorage
 
         private static void CreateDemoData()
         {
+            string WebJobsDashboard = ConfigurationManager.AppSettings["AzureWebJobsDashboard"];
+            string WebJobsStorage = ConfigurationManager.AppSettings["AzureWebJobsStorage"];
+
+            if (string.IsNullOrWhiteSpace(WebJobsDashboard) || string.IsNullOrWhiteSpace(WebJobsStorage) ||
+                String.Equals(WebJobsDashboard, "AzureWebJobsDashboard", StringComparison.OrdinalIgnoreCase) ||
+                String.Equals(WebJobsStorage, "AzureWebJobsDashboard", StringComparison.OrdinalIgnoreCase))
+            {
+
+                Console.WriteLine("Please add the Azure Storage account credentials in App.config");
+                Console.ReadKey();
+            }
+            
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference("input");

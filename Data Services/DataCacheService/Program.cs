@@ -21,6 +21,7 @@ using StackExchange.Redis;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Text;
+using System.Configuration;
 
 namespace DataCacheService
 {
@@ -42,7 +43,9 @@ namespace DataCacheService
         {
             // Replace these values with the values from your Azure Redis Cache instance.
             // For more information, see http://aka.ms/ConnectToTheAzureRedisCache
-            return ConnectionMultiplexer.Connect("<your cache name here>.redis.cache.windows.net,abortConnect=false,ssl=true,password=...");
+            string redisCacheName = ConfigurationManager.AppSettings["redisCacheName"];
+            string redisCachePassword = ConfigurationManager.AppSettings["redisCachePassword"];
+            return ConnectionMultiplexer.Connect(redisCacheName + ",abortConnect=false,ssl=true,password=" + redisCachePassword);
         });
 
         public static ConnectionMultiplexer Connection
@@ -55,7 +58,18 @@ namespace DataCacheService
 
         static void Main(string[] args)
         {
+            string redisCacheName = ConfigurationManager.AppSettings["redisCacheName"];
+            string redisCachePassword = ConfigurationManager.AppSettings["redisCachePassword"];
 
+            if (string.IsNullOrWhiteSpace(redisCacheName) || string.IsNullOrWhiteSpace(redisCachePassword) ||
+                String.Equals(redisCacheName, "TODO - [YOUR Cache Name] eg. test.redis.cache.windows.net", StringComparison.OrdinalIgnoreCase) ||
+                String.Equals(redisCachePassword, "TODO - [YOUR Cache Key] eg. test.redis.cache.windows.net", StringComparison.OrdinalIgnoreCase))
+            {
+
+                Console.WriteLine("Please update your Redis Cache credentials in App.config");
+                Console.ReadKey();
+            }
+            
             // 1. Get a reference to your Azure Redis Cache.
             //    Azure Redis Cache instances have a default of 16 databases,
             //    numbered 0-15, with 0 being the default database if none
