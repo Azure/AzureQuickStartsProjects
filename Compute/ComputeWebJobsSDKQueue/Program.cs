@@ -23,13 +23,13 @@ using System.Configuration;
 
 namespace ComputeWebJobsSDKStorageQueue
 {
-    // To learn more about Microsoft Azure WebJobs SDK, please see http://go.microsoft.com/fwlink/?LinkID=320976
-
     //******************************************************************************************************
     // This will show you how to perform common scenarios using the Microsoft Azure Queue storage service using 
     // the Microsoft Azure WebJobs SDK. The scenarios covered include triggering a function when a new message comes
     // on a queue, sending a message on a queue.   
     // 
+    // To learn more about Microsoft Azure WebJobs SDK, please see http://go.microsoft.com/fwlink/?LinkID=320976
+    //
     // TODO: Create a Storage Account through the Portal or Visual Studio and provide your [AccountName] and 
     //       [AccountKey] in the App.Config http://go.microsoft.com/fwlink/?LinkId=325277            
     //*****************************************************************************************************
@@ -38,25 +38,35 @@ namespace ComputeWebJobsSDKStorageQueue
     {
         static void Main()
         {
+            if (!VerifyConfiguration())
+            {
+                Console.ReadLine();
+                return;
+            }
+
             CreateDemoData();
 
             JobHost host = new JobHost();
-            host.Start();
+            host.RunAndBlock();
+        }
+
+        private static bool VerifyConfiguration()
+        {
+            string webJobsDashboard = ConfigurationManager.ConnectionStrings["AzureWebJobsDashboard"].ConnectionString;
+            string webJobsStorage = ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString;
+
+            bool configOK = true;
+            if (string.IsNullOrWhiteSpace(webJobsDashboard) || string.IsNullOrWhiteSpace(webJobsStorage))
+            {
+                configOK = false;
+                Console.WriteLine("Please add the Azure Storage account credentials in App.config");
+
+            }
+            return configOK;
         }
 
         private static void CreateDemoData()
         {
-            string WebJobsDashboard = ConfigurationManager.AppSettings["AzureWebJobsDashboard"];
-            string WebJobsStorage = ConfigurationManager.AppSettings["AzureWebJobsStorage"];
-
-            if (string.IsNullOrWhiteSpace(WebJobsDashboard) || string.IsNullOrWhiteSpace(WebJobsStorage) ||
-                String.Equals(WebJobsDashboard, "AzureWebJobsDashboard", StringComparison.OrdinalIgnoreCase) ||
-                String.Equals(WebJobsStorage, "AzureWebJobsDashboard", StringComparison.OrdinalIgnoreCase))
-            {
-
-                Console.WriteLine("Please add the Azure Storage account credentials in App.config");
-                Console.ReadKey();
-            }
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString);
 
             CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
