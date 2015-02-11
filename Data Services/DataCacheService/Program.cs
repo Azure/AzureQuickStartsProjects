@@ -28,13 +28,23 @@ namespace DataCacheService
     class Program
     {
         //***************************************************************************************************************************
+        // Azure Redis Cache QuickStart
+        //
+        // This sample demonstrates the following scenarios:
+        //  1. Connecting to a Redis cache using the StackExchange Redis client
+        //  2. Storing and retrieving primitive values
+        //  3. Storing and retrieving .NET objects
+        //  4. Retrieving and/or adding cache entries
+        //  5. Removing items from the cache
+        //  6. Storing items with an expiration time
+        //
         // TODO: provision your cache, configure the cache client, and configure the ConnectionMultiplexer. In this example the
         //       ConnectionMultiplexer is configured using lazy initialization which provides a thread safe way to ensure that only
         //       one ConnectedMultiplexer instance is used. 
         //       For instructions on creating an Azure Redis Cache instance and connecting to a cache, see:
         //           http://aka.ms/CreateAzureRedisCache 
         //           http://aka.ms/ConfigureAzureRedisCacheClients
-        // NOTE: Never store credentials in source code. In this example they are hardcoded into the code for simplicity. For information
+        // NOTE: Never store credentials in source code. In this example they are defined in app.config. For information
         //       on how to store credentials, see:
         //           Azure Websites: How Application Strings and Connection Strings Work 
         //           http://azure.microsoft.com/blog/2013/07/17/windows-azure-web-sites-how-application-strings-and-connection-strings-work/
@@ -62,12 +72,12 @@ namespace DataCacheService
             string redisCachePassword = ConfigurationManager.AppSettings["redisCachePassword"];
 
             if (string.IsNullOrWhiteSpace(redisCacheName) || string.IsNullOrWhiteSpace(redisCachePassword) ||
-                String.Equals(redisCacheName, "TODO - [YOUR Cache Name] eg. test.redis.cache.windows.net", StringComparison.OrdinalIgnoreCase) ||
-                String.Equals(redisCachePassword, "TODO - [YOUR Cache Key] eg. test.redis.cache.windows.net", StringComparison.OrdinalIgnoreCase))
+                redisCacheName.StartsWith("TODO") || redisCachePassword.StartsWith("TODO"))
             {
 
                 Console.WriteLine("Please update your Redis Cache credentials in App.config");
                 Console.ReadKey();
+                return;
             }
             
             // 1. Get a reference to your Azure Redis Cache.
@@ -115,7 +125,7 @@ namespace DataCacheService
             // Retrieve it as an object.
             e25copy = (Employee)cache.Get("e25");
 
-            // 4. Lookup items in cache, if no items present retrieve and store from data source. This is
+            // Lookup items in cache, if no items present retrieve and store from data source. This is
             //    known as the cache-aside pattern.
             Console.WriteLine("4. Lookup items in cache, if no items present retrieve from data source and store in cache");
 
@@ -135,14 +145,14 @@ namespace DataCacheService
             LogEmployeesToConsole(cache.Get<IList<Employee>>("employees"));
 
             // To remove an item call KeyDelete with the item's key.
-            Console.WriteLine("7. To remove an item call Remove");
+            Console.WriteLine("5. To remove an item call Remove");
             if (cache.KeyDelete("employees"))
             {
                 Console.WriteLine("Item under key 'employees' removed from cache");
             }
 
-            // 8. You can also cache an item with a specific expiration time by providing a timeout.
-            Console.WriteLine("8. You can also cache an item with a specific expiration time by providing a timeout.");
+            // You can also cache an item with a specific expiration time by providing a timeout.
+            Console.WriteLine("6. You can also cache an item with a specific expiration time by providing a timeout.");
 
             // In this example the timeout is 5 seconds.
             cache.StringSet("item25", "Time sensitive item", TimeSpan.FromSeconds(5));
