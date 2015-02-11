@@ -45,6 +45,12 @@ namespace ComputeWebJobsSDKServiceBus
 
         public static void Main()
         {
+            if (!VerifyConfiguration())
+            {
+                Console.ReadLine();
+                return;
+            }
+
             _servicesBusConnectionString = ConfigurationManager.ConnectionStrings["AzureWebJobsServiceBus"].ConnectionString;
             _namespaceManager = NamespaceManager.CreateFromConnectionString(_servicesBusConnectionString);
             CreateStartMessage();
@@ -58,19 +64,27 @@ namespace ComputeWebJobsSDKServiceBus
             host.RunAndBlock();
         }
 
+        private static bool VerifyConfiguration()
+        {
+            string webJobsDashboard = ConfigurationManager.ConnectionStrings["AzureWebJobsDashboard"].ConnectionString;
+            string webJobsStorage = ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString;
+            string servicesBusConnectionString = ConfigurationManager.ConnectionStrings["AzureWebJobsServiceBus"].ConnectionString;
+
+            bool configOK = true;
+            if (string.IsNullOrWhiteSpace(webJobsDashboard) || string.IsNullOrWhiteSpace(webJobsStorage))
+            {
+                configOK = false;
+                Console.WriteLine("Please add the Azure Storage account credentials in App.config");
+            }
+            if (string.IsNullOrWhiteSpace(servicesBusConnectionString))
+            {
+                configOK = false;
+                Console.WriteLine("Please add your Service Bus connection string in App.config");
+            }
+            return configOK;
+        }
         private static void CreateStartMessage()
         {
-            string WebJobsDashboard = ConfigurationManager.AppSettings["AzureWebJobsDashboard"];
-            string WebJobsStorage = ConfigurationManager.AppSettings["AzureWebJobsStorage"];
-
-            if (string.IsNullOrWhiteSpace(WebJobsDashboard) || string.IsNullOrWhiteSpace(WebJobsStorage) ||
-                String.Equals(WebJobsDashboard, "AzureWebJobsDashboard", StringComparison.OrdinalIgnoreCase) ||
-                String.Equals(WebJobsStorage, "AzureWebJobsDashboard", StringComparison.OrdinalIgnoreCase))
-            {
-
-                Console.WriteLine("Please add the Azure Storage account credentials in App.config");
-                Console.ReadKey();
-            }
             if (!_namespaceManager.QueueExists(Functions.StartQueueName))
             {
                 _namespaceManager.CreateQueue(Functions.StartQueueName);
