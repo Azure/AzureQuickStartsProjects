@@ -71,7 +71,7 @@ namespace ComputeWebJobsSDKBlobStorage
         private static void CreateDemoData()
         {
             Console.WriteLine("Creating Demo data");
-            Console.WriteLine("Functions will store logs in the specified Azure storage account. The functions take in a parameter called TextWriter for logging");
+            Console.WriteLine("Functions will store logs in the 'azure-webjobs-hosts' container in the specified Azure storage account. The functions take in a TextWriter parameter for logging.");
            
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();

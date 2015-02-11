@@ -86,7 +86,7 @@ namespace ComputeWebJobsSDKServiceBus
         private static void CreateStartMessage()
         {
             Console.WriteLine("Creating Demo data");
-            Console.WriteLine("Functions will store logs in the specified Azure storage account. The functions take in a parameter called TextWriter for logging");
+            Console.WriteLine("Functions will store logs in the 'azure-webjobs-hosts' container in the specified Azure storage account. The functions take in a TextWriter parameter for logging.");
 
             if (!_namespaceManager.QueueExists(Functions.StartQueueName))
             {
