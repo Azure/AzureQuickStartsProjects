@@ -43,16 +43,21 @@ namespace ComputeWebJobsSDKServiceBus
             stream.Position = 0;
 
             output = new BrokeredMessage(stream);
+            
 
             log.WriteLine("SBQueue2SBTopic: " + message);
         }
 
         // Topic subscription listener #1
         public static void SBTopicListener1(
-            [ServiceBusTrigger(TopicName, QueueNamePrefix + "topic-1")] string message,
+            [ServiceBusTrigger(TopicName, QueueNamePrefix + "topic-1")] BrokeredMessage message,
             TextWriter log)
         {
-            log.WriteLine("SBTopicListener1: " + message);
+            using (Stream stream = message.GetBody<Stream>())
+            using (TextReader reader = new StreamReader(stream))
+            {
+                log.WriteLine("SBTopicListener1" + reader.ReadToEnd());
+            }
         }
 
         // Topic subscription listener #2
