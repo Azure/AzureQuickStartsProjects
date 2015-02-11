@@ -67,10 +67,14 @@ namespace ComputeWebJobsSDKStorageQueue
 
         private static void CreateDemoData()
         {
+            Console.WriteLine("Creating Demo data");
+            Console.WriteLine("Functions will store logs in the specified Azure storage account. The functions take in a parameter called TextWriter for logging");
+           
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString);
 
             CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
             CloudQueue queue = queueClient.GetQueueReference("initialorder");
+            CloudQueue queue2 = queueClient.GetQueueReference("initialorderproperty");
             queue.CreateIfNotExists();
 
             Order person = new Order()
@@ -80,6 +84,7 @@ namespace ComputeWebJobsSDKStorageQueue
             };
 
             queue.AddMessage(new CloudQueueMessage(JsonConvert.SerializeObject(person)));
+            queue2.AddMessage(new CloudQueueMessage(JsonConvert.SerializeObject(person)));
         }
     }
 }

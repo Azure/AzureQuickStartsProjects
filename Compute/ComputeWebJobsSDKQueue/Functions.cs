@@ -59,7 +59,7 @@ namespace ComputeWebJobsSDKStorageQueue
         /// The "Name" parameter will get the value of the "Name" property in the Order object
         /// The "DequeueCount" parameter has a special name and its value is retrieved from the actual CloudQueueMessage object
         /// </summary>
-        public static void PropertyBinding([QueueTrigger("initialorder")] Order initialorder, string Name, int dequeueCount, TextWriter log)
+        public static void PropertyBinding([QueueTrigger("initialorderproperty")] Order initialorder, string Name, int dequeueCount, TextWriter log)
         {
             log.WriteLine("New order from: {0}", Name);
             log.WriteLine("Message dequeued {0} times", dequeueCount);

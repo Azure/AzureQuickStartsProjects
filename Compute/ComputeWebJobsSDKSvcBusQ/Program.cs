@@ -85,6 +85,9 @@ namespace ComputeWebJobsSDKServiceBus
         }
         private static void CreateStartMessage()
         {
+            Console.WriteLine("Creating Demo data");
+            Console.WriteLine("Functions will store logs in the specified Azure storage account. The functions take in a parameter called TextWriter for logging");
+
             if (!_namespaceManager.QueueExists(Functions.StartQueueName))
             {
                 _namespaceManager.CreateQueue(Functions.StartQueueName);
@@ -92,15 +95,9 @@ namespace ComputeWebJobsSDKServiceBus
 
             QueueClient queueClient = QueueClient.CreateFromConnectionString(_servicesBusConnectionString, Functions.StartQueueName);
 
-            using (Stream stream = new MemoryStream())
-            using (TextWriter writer = new StreamWriter(stream))
-            {
-                writer.Write("Start");
-                writer.Flush();
-                stream.Position = 0;
-
-                queueClient.Send(new BrokeredMessage(stream));
-            }
+            var message = new BrokeredMessage("Hello");
+            message.ContentType = "plain/text";
+            queueClient.Send(message);
 
             queueClient.Close();
         }

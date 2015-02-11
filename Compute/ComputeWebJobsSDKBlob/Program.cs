@@ -64,13 +64,15 @@ namespace ComputeWebJobsSDKBlobStorage
             {
                 configOK = false;
                 Console.WriteLine("Please add the Azure Storage account credentials in App.config");
-           
             }
             return configOK;
         }
 
         private static void CreateDemoData()
         {
+            Console.WriteLine("Creating Demo data");
+            Console.WriteLine("Functions will store logs in the specified Azure storage account. The functions take in a parameter called TextWriter for logging");
+           
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference("input");
