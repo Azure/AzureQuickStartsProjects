@@ -15,7 +15,7 @@
 //----------------------------------------------------------------------------------
 
 namespace DataFileStorageSample
-{    
+{
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -23,9 +23,17 @@ namespace DataFileStorageSample
     using Microsoft.WindowsAzure;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.File;
-    
+
     /// <summary>
     /// Azure Storage File Sample - Demonstrate how to use the File Storage service. 
+    /// 
+    /// This sample demonstates the following scenarios:
+    ///  1. Creating a file share
+    ///  2. Creating a directory under the root directory 
+    ///  3. Uploading a file to directory
+    ///  4. List Files/Directories in root directory
+    ///  5. Downloading a file from the share
+    ///  6. Deleting a file
     /// 
     /// Note: This sample uses the .NET 4.5 asynchronous programming model to demonstrate how to call the Storage Service using the 
     /// storage client libraries asynchronous API's. When used in real applications this approach enables you to improve the 
@@ -55,10 +63,28 @@ namespace DataFileStorageSample
         {
             Console.WriteLine("Azure Storage File Sample\n ");
 
+            if (!VerifyConfiguration())
+            {
+                Console.ReadLine();
+                return;
+            }
+
             BasicAzureFileOperationsAsync().Wait();
 
             Console.WriteLine("Press any key to exit");
             Console.ReadLine();
+        }
+
+        private static bool VerifyConfiguration()
+        {
+            bool configOK = true;
+            string connectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
+            if (String.IsNullOrWhiteSpace(connectionString) || connectionString.Contains("[AccountName]") || connectionString.Contains("[AccountKey]"))
+            {
+                configOK = false;
+                Console.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the sample.");
+            }
+            return configOK;
         }
 
         /// <summary>
@@ -73,7 +99,7 @@ namespace DataFileStorageSample
 
             // Retrieve storage account information from connection string
             // How to create a storage connection string - http://msdn.microsoft.com/en-us/library/azure/ee758697.aspx
-            CloudStorageAccount storageAccount = CreateStorageAccountFromConnectionString(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
 
             // Create a file client for interacting with the file service.
             CloudFileClient fileClient = storageAccount.CreateCloudFileClient();
@@ -81,7 +107,7 @@ namespace DataFileStorageSample
             // Create a share for organizing files and directories within the storage account.
             Console.WriteLine("1. Creating file share");
             CloudFileShare share = fileClient.GetShareReference(DemoShare);
-            
+
             try
             {
                 await share.CreateIfNotExistsAsync();
@@ -90,8 +116,8 @@ namespace DataFileStorageSample
             {
                 Console.WriteLine("Please make sure your storage account has storage file endpoint enabled and specified correctly in the app.config - then restart the sample.");
                 Console.WriteLine("Press any key to exit");
-                Console.ReadLine(); 
-                throw; 
+                Console.ReadLine();
+                throw;
             }
 
             // Get a reference to the root directory of the share.        
@@ -140,36 +166,7 @@ namespace DataFileStorageSample
             // Console.WriteLine("7. Delete Share");
             // await share.DeleteAsync();
         }
-       
-        /// <summary>
-        /// Validates the connection string information in app.config and throws an exception if it looks like 
-        /// the user hasn't updated this to valid values. 
-        /// </summary>
-        /// <param name="storageConnectionString">The storage connection string</param>
-        /// <returns>CloudStorageAccount object</returns>
-        private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)
-        {
-            CloudStorageAccount storageAccount;
-            try
-            {
-                storageAccount = CloudStorageAccount.Parse(storageConnectionString);
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the sample.");
-                Console.WriteLine("Press any key to exit");
-                Console.ReadLine(); 
-                throw;
-            }
-            catch (ArgumentException)
-            {
-                Console.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the sample.");
-                Console.WriteLine("Press any key to exit");
-                Console.ReadLine();
-                throw;
-            }
 
-            return storageAccount;
-        }
+
     }
 }
