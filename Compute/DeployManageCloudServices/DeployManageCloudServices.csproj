@@ -101,16 +101,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\Common\CertificateAuthenticationHelper.cs">
-      <Link>CertificateAuthenticationHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Shared\Common\PublishSettingsSubscriptionItem.cs">
-      <Link>PublishSettingsSubscriptionItem.cs</Link>
-    </Compile>
+    <Compile Include="CertificateAuthenticationHelper.cs" />
     <Compile Include="ManagementController.cs" />
     <Compile Include="ManagementControllerParameters.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublishSettingsSubscriptionItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
